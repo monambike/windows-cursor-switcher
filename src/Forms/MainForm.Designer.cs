@@ -30,6 +30,8 @@
         {
             toolStrip1 = new ToolStrip();
             toolStripLabel1 = new ToolStripLabel();
+            tsbUpdate = new ToolStripButton();
+            tsbView = new ToolStripButton();
             tsbAbout = new ToolStripButton();
             toolStrip1.SuspendLayout();
             SuspendLayout();
@@ -37,7 +39,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, tsbAbout });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, tsbUpdate, tsbView, tsbAbout });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(784, 25);
@@ -49,13 +51,31 @@
             toolStripLabel1.Name = "toolStripLabel1";
             toolStripLabel1.Size = new Size(0, 22);
             // 
+            // tsbUpdate
+            // 
+            tsbUpdate.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            tsbUpdate.ImageTransparentColor = Color.Magenta;
+            tsbUpdate.Name = "tsbUpdate";
+            tsbUpdate.Size = new Size(49, 22);
+            tsbUpdate.Text = "Update";
+            tsbUpdate.Click += tsbUpdate_Click;
+            // 
+            // tsbView
+            // 
+            tsbView.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            tsbView.ImageTransparentColor = Color.Magenta;
+            tsbView.Name = "tsbView";
+            tsbView.Size = new Size(36, 22);
+            tsbView.Text = "View";
+            tsbView.Click += tsbView_Click;
+            // 
             // tsbAbout
             // 
             tsbAbout.DisplayStyle = ToolStripItemDisplayStyle.Text;
             tsbAbout.ImageTransparentColor = Color.Magenta;
             tsbAbout.Name = "tsbAbout";
-            tsbAbout.Size = new Size(98, 22);
-            tsbAbout.Text = "toolStripButton1";
+            tsbAbout.Size = new Size(44, 22);
+            tsbAbout.Text = "About";
             tsbAbout.Click += tsbAbout_Click;
             // 
             // MainForm
@@ -67,6 +87,7 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "MainForm";
             Text = "Windows Cursor Switcher";
+            Load += MainForm_Load;
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             ResumeLayout(false);
@@ -78,5 +99,8 @@
         private ToolStrip toolStrip1;
         private ToolStripLabel toolStripLabel1;
         private ToolStripButton tsbAbout;
+        private ToolStripButton tsbTest;
+        private ToolStripButton tsbView;
+        private ToolStripButton tsbUpdate;
     }
 }

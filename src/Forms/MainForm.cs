@@ -16,16 +16,36 @@ namespace WindowsCursorSwitcher
 
         private void tsbAbout_Click(object sender, EventArgs e)
         {
-            var testSchema = TestCursors.TestSchema;
-
-            GenerateCursors(testSchema.Name, testSchema.CursorPathsToString());
+            MessageBox.Show("Created by: @monambike. (2025) :D Enjoy it!");
         }
 
-        private void GenerateCursors(string name, string value)
+        private void UpdateCursors(string name, string value)
         {
             UtilRegedit.ModifyKeyValue(name, value);
 
             MessageBox.Show($"Name: {name}{Environment.NewLine + Environment.NewLine}Cursor Paths: {value}");
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if (!UtilApplication.IsRunAsAdministrator())
+                MessageBox.Show($@"The app needs to be run in administrator mode in order to change the ""Windows Variables"" and change the cursors."
+                    + Environment.NewLine + "Rick Click the Executable > Properties > Shortcut > Advanced > Run as Administrator");
+        }
+
+        private void tsbView_Click(object sender, EventArgs e)
+        {
+            string names = "";
+            foreach (var value in UtilRegedit.ReadKeyValues()) names += value + Environment.NewLine;
+
+            MessageBox.Show(names);
+        }
+
+        private void tsbUpdate_Click(object sender, EventArgs e)
+        {
+            var testSchema = TestCursors.TestSchema;
+
+            UpdateCursors(testSchema.Name, testSchema.CursorPathsToString());
         }
     }
 }

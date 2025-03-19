@@ -13,13 +13,41 @@ namespace WindowsCursorSwitcher.Utils
 
         internal static void ModifyKeyValue(string keyName, string keyValue)
         {
-            using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(RegeditCursorSchemesPath, true);
-
-            if (registryKey != null)
+            try
             {
-                registryKey.SetValue(keyName, keyValue, RegistryValueKind.String);
-                registryKey.Close();
+                using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(RegeditCursorSchemesPath, true);
+
+                if (registryKey != null)
+                {
+                    registryKey.SetValue(keyName, keyValue, RegistryValueKind.String);
+                    registryKey.Close();
+                }
             }
+            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            {
+                Console.WriteLine($"An exception occurred: {ex.Message} while trying to modify key values from Windows Registry Editor (regedit).");
+                throw;
+            }
+        }
+
+        internal static string[] ReadKeyValues()
+        {
+            try
+            {
+                using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(RegeditCursorSchemesPath);
+
+                if (registryKey != null)
+                {
+                    string[] registryKeyValues = registryKey.GetValueNames();
+                    return registryKeyValues;
+                }
+            }
+            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            {
+                Console.WriteLine($"An exception occurred: {ex.Message} while trying to read key values from Windows Registry Editor (regedit).");
+                throw;
+            }
+            return [];
         }
     }
 }
