@@ -16,16 +16,16 @@ namespace WindowsCursorSwitcher
 
         private void tsbAbout_Click(object sender, EventArgs e)
         {
-            GenerateCursors();
-        }
-
-        private void GenerateCursors()
-        {
             var testSchema = TestCursors.TestSchema;
 
-            //UtilRegedit.ModifyKeyValue(testSchema.Name, testSchema.CursorPathsToString());
+            GenerateCursors(testSchema.Name, testSchema.CursorPathsToString());
+        }
 
-            MessageBox.Show($"Name: {testSchema.Name}{Environment.NewLine + Environment.NewLine}Cursor Paths: {testSchema.CursorPathsToString()}");
+        private void GenerateCursors(string name, string value)
+        {
+            UtilRegedit.ModifyKeyValue(name, value);
+
+            MessageBox.Show($"Name: {name}{Environment.NewLine + Environment.NewLine}Cursor Paths: {value}");
         }
     }
 }

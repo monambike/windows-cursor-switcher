@@ -9,26 +9,17 @@ namespace WindowsCursorSwitcher.Utils
 {
     internal static class UtilRegedit
     {
-        internal static string RegeditCursorSchemesPath => @"Computer\HKEY_CURRENT_USER\Control Panel\Cursors\Schemes";
+        internal static string RegeditCursorSchemesPath => @"Control Panel\Cursors\Schemes";
 
         internal static void ModifyKeyValue(string keyName, string keyValue)
         {
-            using RegistryKey? registryKey = Registry.LocalMachine.OpenSubKey(RegeditCursorSchemesPath, true);
+            using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(RegeditCursorSchemesPath, true);
 
             if (registryKey != null)
             {
                 registryKey.SetValue(keyName, keyValue, RegistryValueKind.String);
                 registryKey.Close();
             }
-        }
-
-        internal static void Add()
-        {
-            string schemaName = string.Empty;
-            
-            string schemaPaths = string.Empty;
-
-            ModifyKeyValue(schemaName, schemaPaths);
         }
     }
 }

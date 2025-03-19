@@ -8,5 +8,5 @@ internal class Cursor(SystemCursor systemCursor, string path)
 {
     public SystemCursor SystemCursor { get; set; } = systemCursor;
 
-    public string Path { get; set; } = path;
+    public string RelativePath { get; set; } = path;
 }

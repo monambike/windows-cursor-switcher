@@ -23,6 +23,6 @@ namespace WindowsCursorSwitcher.Entities
 
         public new string ToString() => CursorPathsToString();
 
-        public string CursorPathsToString() => string.Join(",", Cursors.Select(cursor => cursor.Path ?? ""));
+        public string CursorPathsToString() => string.Join(",", Cursors.Select(cursor => cursor.RelativePath ?? ""));
     }
 }
