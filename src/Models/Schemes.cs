@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2024 Vinicius Gabriel Marques de Melo. All rights reserved.
+﻿// Copyright(c) 2025 Vinicius Gabriel Marques de Melo. All rights reserved.
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
@@ -8,11 +8,11 @@ namespace WindowsCursorSwitcher.Models
 {
     internal class Schemes
     {
-        public bool CreateNewCursorSchemeForCurrentUser(string scheme)
+        private void CreateNewCursorSchemeForCurrentUser(string scheme)
         {
             UtilRegedit.ModifyKeyValue(scheme, "paths");
 
-            CreateRegistry(RegeditSchemesPath);
+            //CreateRegistry(RegeditSchemesPath);
         }
 
         private void AddAndSaveToSettings()
@@ -22,7 +22,7 @@ namespace WindowsCursorSwitcher.Models
 
         private void ChangePaths()
         {
-            string SelectedPaths
+
         }
     }
 }
