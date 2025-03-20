@@ -2,8 +2,9 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using System.Xml.Linq;
 using WindowsCursorSwitcher.Data;
-using WindowsCursorSwitcher.Events;
+using WindowsCursorSwitcher.Managers;
 using WindowsCursorSwitcher.Utils;
 
 namespace WindowsCursorSwitcher
@@ -15,6 +16,8 @@ namespace WindowsCursorSwitcher
 
         private void UpdateCursors(string name, string value)
         {
+
+
             UtilRegedit.ModifyKeyValue(name, value);
 
             MessageBox.Show($"Name: {name}{Environment.NewLine + Environment.NewLine}Cursor Paths: {value}");
@@ -41,7 +44,7 @@ namespace WindowsCursorSwitcher
         {
             CheckIfRunAsAdministrator();
 
-            var tabSchemaMenuHandler = new TabSchemaMenuHandler(tcSchemas, cmsSchema);
+            var tabSchemaMenuHandler = new TabSchemaManager(tcSchemas, cmsSchema);
             tcSchemas.MouseUp += tabSchemaMenuHandler.TcSchemas_MouseUp;
             tabSchemaMenuHandler.CreateTabsFromRegedit();
         }
@@ -58,8 +61,6 @@ namespace WindowsCursorSwitcher
         private void tsbUpdate_Click(object sender, EventArgs e)
         {
             var testSchema = TestCursors.TestSchema;
-
-            UpdateCursors(testSchema.Name, testSchema.CursorPathsToString());
         }
 
 
@@ -71,5 +72,11 @@ namespace WindowsCursorSwitcher
 
         private void btnExit_Click(object sender, EventArgs e) => UtilMessages.ShowConfirmationExitMessage();
 
+        private void btnSave_Click(object sender, EventArgs e) => Save();
+
+        internal static void Save()
+        {
+
+        }
     }
 }

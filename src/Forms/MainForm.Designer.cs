@@ -31,10 +31,10 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             tsMain = new ToolStrip();
-            tsbUpdate = new ToolStripButton();
             tsbView = new ToolStripButton();
-            tsbAbout = new ToolStripButton();
+            tsbUpdate = new ToolStripButton();
             tslHowToUse = new ToolStripButton();
+            tsbAbout = new ToolStripButton();
             tsbExit = new ToolStripButton();
             tlpMain = new TableLayoutPanel();
             tlpUserSchemes = new TableLayoutPanel();
@@ -66,15 +66,6 @@
             tsMain.TabIndex = 0;
             tsMain.Text = "toolStrip1";
             // 
-            // tsbUpdate
-            // 
-            tsbUpdate.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            tsbUpdate.ImageTransparentColor = Color.Magenta;
-            tsbUpdate.Name = "tsbUpdate";
-            tsbUpdate.Size = new Size(49, 22);
-            tsbUpdate.Text = "Update";
-            tsbUpdate.Click += tsbUpdate_Click;
-            // 
             // tsbView
             // 
             tsbView.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -84,14 +75,14 @@
             tsbView.Text = "View";
             tsbView.Click += tsbView_Click;
             // 
-            // tsbAbout
+            // tsbUpdate
             // 
-            tsbAbout.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            tsbAbout.ImageTransparentColor = Color.Magenta;
-            tsbAbout.Name = "tsbAbout";
-            tsbAbout.Size = new Size(44, 22);
-            tsbAbout.Text = "About";
-            tsbAbout.Click += tsbAbout_Click;
+            tsbUpdate.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            tsbUpdate.ImageTransparentColor = Color.Magenta;
+            tsbUpdate.Name = "tsbUpdate";
+            tsbUpdate.Size = new Size(49, 22);
+            tsbUpdate.Text = "Update";
+            tsbUpdate.Click += tsbUpdate_Click;
             // 
             // tslHowToUse
             // 
@@ -102,6 +93,15 @@
             tslHowToUse.Size = new Size(74, 22);
             tslHowToUse.Text = "How To Use";
             tslHowToUse.Click += tslHowToUse_Click;
+            // 
+            // tsbAbout
+            // 
+            tsbAbout.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            tsbAbout.ImageTransparentColor = Color.Magenta;
+            tsbAbout.Name = "tsbAbout";
+            tsbAbout.Size = new Size(44, 22);
+            tsbAbout.Text = "About";
+            tsbAbout.Click += tsbAbout_Click;
             // 
             // tsbExit
             // 
@@ -188,6 +188,7 @@
             btnSave.TabIndex = 4;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // btnExit
             // 

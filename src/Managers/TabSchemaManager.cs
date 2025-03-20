@@ -5,25 +5,27 @@
 using WindowsCursorSwitcher.Entities;
 using WindowsCursorSwitcher.Utils;
 
-namespace WindowsCursorSwitcher.Events
+namespace WindowsCursorSwitcher.Managers
 {
-    internal class TabSchemaMenuHandler(TabControl tcSchemas, ContextMenuStrip cmsSchema)
+    internal class TabSchemaManager(TabControl tcSchemas, ContextMenuStrip cmsSchema)
     {
         private readonly TabControl _tcSchemas = tcSchemas;
 
         private readonly ContextMenuStrip _cmsSchema = cmsSchema;
 
+        private List<TabSchemaPageManager> TabSchemaPageManagers = [];
+
         internal void TcSchemas_MouseUp(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                for (int i = 0; i < tcSchemas.TabCount; i++)
+                for (int i = 0; i < _tcSchemas.TabCount; i++)
                 {
-                    Rectangle rectangle = tcSchemas.GetTabRect(i);
+                    Rectangle rectangle = _tcSchemas.GetTabRect(i);
                     if (rectangle.Contains(e.Location))
                     {
-                        tcSchemas.SelectedIndex = i;
-                        cmsSchema.Show(tcSchemas, e.Location);
+                        _tcSchemas.SelectedIndex = i;
+                        _cmsSchema.Show(_tcSchemas, e.Location);
                         break;
                     }
                 }
@@ -39,7 +41,7 @@ namespace WindowsCursorSwitcher.Events
                 foreach (var key in keyValues)
                 {
                     TabPage newTab = new(key.Key);
-                    tcSchemas.TabPages.Add(newTab);
+                    _tcSchemas.TabPages.Add(newTab);
 
                     string[] items = key.Value.ToString().Split(',');
                     List<string> itemList = items.Select(i => i.Trim()).ToList();
@@ -54,6 +56,7 @@ namespace WindowsCursorSwitcher.Events
                         ColumnStyles = { new ColumnStyle(SizeType.Percent, 10), new ColumnStyle(SizeType.Percent, 90) }
                     };
 
+                    var tabSchemaPageManager = new TabSchemaPageManager { TabPage = newTab };
                     for (int i = 0; i < itemList.Count; i++)
                     {
                         var label = new Label()
@@ -68,10 +71,19 @@ namespace WindowsCursorSwitcher.Events
                             Dock = DockStyle.Fill
                         };
                         tableLayoutPanel.Controls.Add(textBox, 1, i);
+                        tabSchemaPageManager.TextBoxes.Add(textBox);
                     }
                     newTab.Controls.Add(tableLayoutPanel);
+                    TabSchemaPageManagers.Add(tabSchemaPageManager);
                 }
             }
+        }
+
+        internal class TabSchemaPageManager
+        {
+            internal TabPage TabPage { get; set; }
+
+            internal List<TextBox> TextBoxes { get; set; } = [];
         }
     }
 }
