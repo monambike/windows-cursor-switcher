@@ -2,6 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using System.Windows.Forms;
 using WindowsCursorSwitcher.Entities;
 using WindowsCursorSwitcher.Utils;
 
@@ -61,31 +62,39 @@ namespace WindowsCursorSwitcher.Managers
                     {
                         var label = new Label()
                         {
-                            Text = $"{SystemCursors.Cursors[i].WindowsName} ({SystemCursors.Cursors[i].RegeditName})",
-                            Dock = DockStyle.Fill
+                            Dock = DockStyle.Fill,
+                            Text = $"{SystemCursors.Cursors[i].WindowsName} ({SystemCursors.Cursors[i].RegeditName})"
                         };
                         tableLayoutPanel.Controls.Add(label, 0, i);
 
                         var textBox = new TextBox()
                         {
-                            Text = itemList[i],
-                            Dock = DockStyle.Fill
+                            Dock = DockStyle.Fill,
+                            Text = itemList[i]
                         };
                         tableLayoutPanel.Controls.Add(textBox, 1, i);
                         tabSchemaPageManager.TextBoxes.Add(textBox);
 
                         var button = new Button()
                         {
-                            Text = "Folder",
-                            AutoSize = true
+                            AutoSize = true,
+                            Image = Properties.Resources.folder,
+                            ImageAlign = ContentAlignment.MiddleLeft,
+                            Text = "Select Folder",
+                            TextImageRelation = TextImageRelation.ImageBeforeText
                         };
                         tableLayoutPanel.Controls.Add(button, 2, i);
                         tabSchemaPageManager.Button = button;
 
                         button.Click += (sender, e) =>
                         {
-                            var folderDialog = new FolderBrowserDialog();
-                            if (folderDialog.ShowDialog() == DialogResult.OK) textBox.Text = folderDialog.SelectedPath;
+                            var openFileDialog = new OpenFileDialog()
+                            {
+                                Title = "Select a Cursor File", // Título da janela
+                                Filter = "Cursor Files (*.cur;*.ani)|*.cur;*.ani", // Filtros para tipos de arquivo
+                                Multiselect = false // Defina como true se quiser permitir múltiplos arquivos
+                            };
+                            if (openFileDialog.ShowDialog() == DialogResult.OK) textBox.Text = openFileDialog.FileName;
                         };
                     }
                     newTab.Controls.Add(tableLayoutPanel);
