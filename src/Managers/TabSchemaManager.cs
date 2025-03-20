@@ -81,6 +81,12 @@ namespace WindowsCursorSwitcher.Managers
                         };
                         tableLayoutPanel.Controls.Add(button, 2, i);
                         tabSchemaPageManager.Button = button;
+
+                        button.Click += (sender, e) =>
+                        {
+                            var folderDialog = new FolderBrowserDialog();
+                            if (folderDialog.ShowDialog() == DialogResult.OK) textBox.Text = folderDialog.SelectedPath;
+                        };
                     }
                     newTab.Controls.Add(tableLayoutPanel);
                     TabSchemaPageManagers.Add(tabSchemaPageManager);
