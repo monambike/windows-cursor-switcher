@@ -3,7 +3,7 @@
 // For license information, please see the LICENSE file in the root directory.
 
 using Microsoft.Win32;
-using static WindowsCursorSwitcher.MainForm;
+using WindowsCursorSwitcher.Entities;
 
 
 namespace WindowsCursorSwitcher.Utils
@@ -24,20 +24,11 @@ namespace WindowsCursorSwitcher.Utils
                     registryKey.Close();
                 }
             }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            catch (Exception ex)
             {
                 Console.WriteLine($"An exception occurred: {ex.Message} while trying to modify key values from Windows Registry Editor (regedit).");
                 throw;
             }
-        }
-
-        internal class RegeditKeyValue(string key, object? value, RegistryValueKind registryValueKind)
-        {
-            public string Key { get; set; } = key;
-
-            public object? Value { get; set; } = value;
-
-            public RegistryValueKind RegistryValueKind { get; set; } = registryValueKind;
         }
 
         internal static List<RegeditKeyValue> ReadKeyValues()
