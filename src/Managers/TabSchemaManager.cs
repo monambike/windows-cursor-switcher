@@ -50,8 +50,8 @@ namespace WindowsCursorSwitcher.Managers
                     {
                         AutoScroll = true,
                         AutoSize = true,
-                        ColumnCount = 2,
-                        ColumnStyles = { new(SizeType.Percent, 30), new(SizeType.Percent, 70) },
+                        ColumnCount = 3,
+                        ColumnStyles = { new(SizeType.Percent, 30), new(SizeType.Percent, 70), new(SizeType.AutoSize) },
                         Dock = DockStyle.Fill,
                         RowCount = itemList.Count
                     };
@@ -73,6 +73,14 @@ namespace WindowsCursorSwitcher.Managers
                         };
                         tableLayoutPanel.Controls.Add(textBox, 1, i);
                         tabSchemaPageManager.TextBoxes.Add(textBox);
+
+                        var button = new Button()
+                        {
+                            Text = "Folder",
+                            AutoSize = true
+                        };
+                        tableLayoutPanel.Controls.Add(button, 2, i);
+                        tabSchemaPageManager.Button = button;
                     }
                     newTab.Controls.Add(tableLayoutPanel);
                     TabSchemaPageManagers.Add(tabSchemaPageManager);
@@ -85,6 +93,8 @@ namespace WindowsCursorSwitcher.Managers
             internal TabPage TabPage { get; set; }
 
             internal List<TextBox> TextBoxes { get; set; } = [];
+
+            internal Button Button { get; set; }
         }
     }
 }
