@@ -2,7 +2,9 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using System.Linq;
 using WindowsCursorSwitcher.Data;
+using WindowsCursorSwitcher.Entities;
 using WindowsCursorSwitcher.Utils;
 
 namespace WindowsCursorSwitcher
@@ -53,7 +55,38 @@ namespace WindowsCursorSwitcher
             {
                 foreach (var key in keyValues)
                 {
-                    tcSchemas.TabPages.Add(key.Key);
+                    TabPage newTab = new(key.Key);
+                    tcSchemas.TabPages.Add(newTab);
+
+                    string[] items = key.Value.ToString().Split(',');
+                    List<string> itemList = items.Select(i => i.Trim()).ToList();
+
+                    var tableLayoutPanel = new TableLayoutPanel
+                    {
+                        Dock = DockStyle.Fill,
+                        ColumnCount = 2,
+                        AutoSize = true,
+                        RowCount = itemList.Count,
+                        AutoScroll = true,
+                        ColumnStyles = { new ColumnStyle(SizeType.Percent, 10), new ColumnStyle(SizeType.Percent, 90) }
+                    };
+
+                    for (int i = 0; i < itemList.Count; i++)
+                    {
+                        var label = new Label()
+                        {
+                            Text = SystemCursors.Cursors[i].RegeditName
+                        };
+                        tableLayoutPanel.Controls.Add(label, 0, i);
+
+                        var textBox = new TextBox()
+                        {
+                            Text = itemList[i],
+                            Dock = DockStyle.Fill
+                        };
+                        tableLayoutPanel.Controls.Add(textBox, 1, i);
+                    }
+                    newTab.Controls.Add(tableLayoutPanel);
                 }
             }
 
@@ -76,8 +109,6 @@ namespace WindowsCursorSwitcher
                 }
             }
         }
-
-
 
         private void tsbView_Click(object sender, EventArgs e)
         {
