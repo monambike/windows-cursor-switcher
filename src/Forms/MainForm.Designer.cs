@@ -151,6 +151,7 @@
             tcSchemas.SelectedIndex = 0;
             tcSchemas.Size = new Size(772, 480);
             tcSchemas.TabIndex = 0;
+            tcSchemas.SelectedIndexChanged += tcSchemas_SelectedIndexChanged;
             // 
             // label1
             // 

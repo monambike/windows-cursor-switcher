@@ -13,7 +13,7 @@ namespace WindowsCursorSwitcher.Managers
 
         private readonly ContextMenuStrip _cmsSchema = cmsSchema;
 
-        private List<TabSchemaPageManager> TabSchemaPageManagers = [];
+        internal List<TabSchemaPageManager> TabSchemaPageManagers = [];
 
         internal void TcSchemas_MouseUp(object? sender, MouseEventArgs e)
         {
@@ -48,12 +48,12 @@ namespace WindowsCursorSwitcher.Managers
 
                     var tableLayoutPanel = new TableLayoutPanel
                     {
-                        Dock = DockStyle.Fill,
-                        ColumnCount = 2,
-                        AutoSize = true,
-                        RowCount = itemList.Count,
                         AutoScroll = true,
-                        ColumnStyles = { new ColumnStyle(SizeType.Percent, 10), new ColumnStyle(SizeType.Percent, 90) }
+                        AutoSize = true,
+                        ColumnCount = 2,
+                        ColumnStyles = { new(SizeType.Percent, 30), new(SizeType.Percent, 70) },
+                        Dock = DockStyle.Fill,
+                        RowCount = itemList.Count
                     };
 
                     var tabSchemaPageManager = new TabSchemaPageManager { TabPage = newTab };
@@ -61,7 +61,8 @@ namespace WindowsCursorSwitcher.Managers
                     {
                         var label = new Label()
                         {
-                            Text = SystemCursors.Cursors[i].RegeditName
+                            Text = $"{SystemCursors.Cursors[i].WindowsName} ({SystemCursors.Cursors[i].RegeditName})",
+                            Dock = DockStyle.Fill
                         };
                         tableLayoutPanel.Controls.Add(label, 0, i);
 

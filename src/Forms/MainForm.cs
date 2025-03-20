@@ -11,6 +11,8 @@ namespace WindowsCursorSwitcher
 {
     public partial class MainForm : Form
     {
+        internal TabSchemaManager TabSchemaManager { get; set; }
+
         public MainForm() => InitializeComponent();
 
 
@@ -43,10 +45,10 @@ namespace WindowsCursorSwitcher
         private void MainForm_Load(object sender, EventArgs e)
         {
             CheckIfRunAsAdministrator();
-
-            var tabSchemaMenuHandler = new TabSchemaManager(tcSchemas, cmsSchema);
-            tcSchemas.MouseUp += tabSchemaMenuHandler.TcSchemas_MouseUp;
-            tabSchemaMenuHandler.CreateTabsFromRegedit();
+            CheckSchemaTabsCount();
+            TabSchemaManager = new TabSchemaManager(tcSchemas, cmsSchema);
+            tcSchemas.MouseUp += TabSchemaManager.TcSchemas_MouseUp;
+            TabSchemaManager.CreateTabsFromRegedit();
         }
 
 
@@ -74,9 +76,22 @@ namespace WindowsCursorSwitcher
 
         private void btnSave_Click(object sender, EventArgs e) => Save();
 
-        internal static void Save()
-        {
+        private void tcSchemas_SelectedIndexChanged(object sender, EventArgs e) => CheckSchemaTabsCount();
 
+        internal void Save()
+        {
+            int selectedIndex = tcSchemas.SelectedIndex;
+            if (selectedIndex >= 0)
+            {
+                string concatenatedValues = string.Join(",", TabSchemaManager.TabSchemaPageManagers.Select(tsm => tsm.TextBoxes.Select(txt => txt.Text)));
+            }
         }
+        private void CheckSchemaTabsCount()
+        {
+            bool hasTabs = tcSchemas.TabPages.Count > 0;
+
+            btnSave.Enabled = hasTabs;
+        }
+
     }
 }
