@@ -3,6 +3,7 @@
 // For license information, please see the LICENSE file in the root directory.
 
 using Microsoft.Win32;
+using static WindowsCursorSwitcher.MainForm;
 
 
 namespace WindowsCursorSwitcher.Utils
@@ -30,7 +31,16 @@ namespace WindowsCursorSwitcher.Utils
             }
         }
 
-        internal static string[] ReadKeyValues()
+        internal class RegeditKeyValue(string key, object? value, RegistryValueKind registryValueKind)
+        {
+            public string Key { get; set; } = key;
+
+            public object? Value { get; set; } = value;
+
+            public RegistryValueKind RegistryValueKind { get; set; } = registryValueKind;
+        }
+
+        internal static List<RegeditKeyValue> ReadKeyValues()
         {
             try
             {
@@ -38,8 +48,17 @@ namespace WindowsCursorSwitcher.Utils
 
                 if (registryKey != null)
                 {
-                    string[] registryKeyValues = registryKey.GetValueNames();
-                    return registryKeyValues;
+                    string[] registryKeyValueNames = registryKey.GetValueNames();
+
+
+                    List<RegeditKeyValue> regeditKeyValues = [];
+                    foreach (var registryKeyValueName in registryKeyValueNames)
+                    {
+                        RegeditKeyValue regeditKeyValue = new(registryKeyValueName, registryKey.GetValue(registryKeyValueName), registryKey.GetValueKind(registryKeyValueName));
+                        regeditKeyValues.Add(regeditKeyValue);
+                    }
+
+                    return regeditKeyValues;
                 }
             }
             catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
