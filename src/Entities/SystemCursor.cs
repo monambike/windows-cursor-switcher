@@ -2,7 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
-using System.Text.RegularExpressions;
+using WindowsCursorSwitcher.Utils;
 
 namespace WindowsCursorSwitcher.Entities
 {
@@ -14,9 +14,8 @@ namespace WindowsCursorSwitcher.Entities
 
         public SystemCursor(string typeName, string regeditName)
         {
-            var typeNameResult = Regex.Replace(typeName, "(\\B[A-Z])", " $1");
+            var typeNameResult = UtilRegex.ConvertCamelCaseToSpaces().Replace(typeName, " $1");
             (WindowsName, RegeditName) = (typeNameResult, regeditName);
-            SystemCursors.Cursors.Add(this);
         }
     }
 }

@@ -2,19 +2,31 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
-using System.Windows.Forms;
+using System.ComponentModel;
 using WindowsCursorSwitcher.Entities;
 using WindowsCursorSwitcher.Utils;
 
 namespace WindowsCursorSwitcher.Managers
 {
-    internal class TabSchemaManager(TabControl tcSchemas, ContextMenuStrip cmsSchema)
+    internal class TabSchemaManager
     {
-        private readonly TabControl _tcSchemas = tcSchemas;
+        private readonly TabControl _tcSchemas;
 
-        private readonly ContextMenuStrip _cmsSchema = cmsSchema;
+        private readonly ContextMenuStrip _cmsSchema;
 
-        internal List<TabSchemaPageManager> TabSchemaPageManagers = [];
+        internal BindingSource _bsSchema;
+
+        internal List<TabSchemaPage> TabSchemaPageManagers = [];
+
+        internal List<Schema> Schemas = [];
+
+        public TabSchemaManager(TabControl tcSchemas, ContextMenuStrip cmsSchema, BindingSource bsSchema)
+        {
+            (_tcSchemas, _cmsSchema, _bsSchema) = (tcSchemas, cmsSchema, bsSchema);
+
+            BindingList<Schema> cursorSchemes = [];
+            _bsSchema.DataSource = cursorSchemes;
+        }
 
         internal void TcSchemas_MouseUp(object? sender, MouseEventArgs e)
         {
@@ -33,19 +45,30 @@ namespace WindowsCursorSwitcher.Managers
             }
         }
 
-        internal void CreateTabsFromRegedit()
+        internal void UpdateSchemasFromRegedit()
         {
-            var keyValues = UtilRegedit.ReadKeyValues();
+            var regeditSchema = UtilRegedit.ReadKeyValues();
 
-            if (keyValues.Count > 0)
+            Schemas.Clear();
+            foreach(var regeditSchemaEntry in regeditSchema)
             {
-                foreach (var key in keyValues)
+                var schema = new Schema(regeditSchemaEntry.Key);
+                string[] regeditPaths = regeditSchemaEntry.Value.ToString().Split(',');
+                for (int regeditPathIndex = 0; regeditPathIndex < regeditPaths.Count(); regeditPathIndex++)
                 {
-                    TabPage newTab = new(key.Key);
+                    schema.Cursors[regeditPathIndex].RelativePath = regeditPaths[regeditPathIndex];
+                }
+                Schemas.Add(schema);
+            }
+
+            if (Schemas.Count > 0)
+            {
+                for (int regeditSchemaIndex = 0; regeditSchemaIndex < regeditSchema.Count; regeditSchemaIndex++)
+                {
+                    TabPage newTab = new(regeditSchema[regeditSchemaIndex].Key);
                     _tcSchemas.TabPages.Add(newTab);
 
-                    string[] items = key.Value.ToString().Split(',');
-                    List<string> itemList = items.Select(i => i.Trim()).ToList();
+                    string[] regeditPaths = regeditSchema[regeditSchemaIndex].Value.ToString().Split(',');
 
                     var tableLayoutPanel = new TableLayoutPanel
                     {
@@ -54,66 +77,48 @@ namespace WindowsCursorSwitcher.Managers
                         ColumnCount = 3,
                         ColumnStyles = { new(SizeType.Percent, 30), new(SizeType.Percent, 70), new(SizeType.AutoSize) },
                         Dock = DockStyle.Fill,
-                        RowCount = itemList.Count
+                        RowCount = regeditPaths.Count() + 1
                     };
 
-                    var tabSchemaPageManager = new TabSchemaPageManager { TabPage = newTab };
-                    for (int i = 0; i < itemList.Count; i++)
+                    var tabSchemaPageManager = new TabSchemaPage { TabPage = newTab };
+                    for (int regeditPathIndex = 0; regeditPathIndex < regeditPaths.Count(); regeditPathIndex++)
                     {
                         var label = new Label()
                         {
                             Dock = DockStyle.Fill,
-                            Text = $"{SystemCursors.Cursors[i].WindowsName} ({SystemCursors.Cursors[i].RegeditName})"
+                            Text = $"{MappingCursors.Cursors[regeditPathIndex].WindowsName} ({MappingCursors.Cursors[regeditPathIndex].RegeditName})"
                         };
-                        tableLayoutPanel.Controls.Add(label, 0, i);
+                        tableLayoutPanel.Controls.Add(label, 0, regeditPathIndex);
 
                         var textBox = new TextBox()
                         {
                             Dock = DockStyle.Fill,
-                            Text = itemList[i]
+                            DataBindings = { new Binding("Text", Schemas[regeditSchemaIndex].Cursors[regeditPathIndex], "RelativePath") },
+                            Text = regeditPaths[regeditPathIndex]
                         };
-                        tableLayoutPanel.Controls.Add(textBox, 1, i);
+                        tableLayoutPanel.Controls.Add(textBox, 1, regeditPathIndex);
                         tabSchemaPageManager.TextBoxes.Add(textBox);
 
                         var button = new Button()
                         {
                             AutoSize = true,
-                            Image = Properties.Resources.folder,
+                            Image = Properties.Resources.arrow,
                             ImageAlign = ContentAlignment.MiddleLeft,
-                            Text = "Select Folder",
+                            Text = "Set as Cursor",
                             TextImageRelation = TextImageRelation.ImageBeforeText
                         };
-                        tableLayoutPanel.Controls.Add(button, 2, i);
+                        tableLayoutPanel.Controls.Add(button, 2, regeditPathIndex);
                         tabSchemaPageManager.Button = button;
 
                         button.Click += (sender, e) =>
                         {
-                            var openFileDialog = new OpenFileDialog()
-                            {
-                                Title = "Select a Cursor File",
-                                Filter = "Cursor Files (*.cur;*.ani)|*.cur;*.ani",
-                                Multiselect = false
-                            };
-                            if (openFileDialog.ShowDialog() == DialogResult.OK)
-                            {
-                                var relativePath = Path.GetRelativePath(Application.StartupPath, openFileDialog.FileName);
-                                textBox.Text = relativePath;
-                            }
+                            MessageBox.Show("Cursor Changed!", "Hooray!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         };
                     }
                     newTab.Controls.Add(tableLayoutPanel);
                     TabSchemaPageManagers.Add(tabSchemaPageManager);
                 }
             }
-        }
-
-        internal class TabSchemaPageManager
-        {
-            internal TabPage TabPage { get; set; }
-
-            internal List<TextBox> TextBoxes { get; set; } = [];
-
-            internal Button Button { get; set; }
         }
     }
 }

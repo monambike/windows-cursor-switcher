@@ -4,9 +4,9 @@
 
 using WindowsCursorSwitcher.Entities;
 
-internal class Cursor(SystemCursor systemCursor, string path)
+internal class Cursor()
 {
-    public SystemCursor SystemCursor { get; set; } = systemCursor;
+    public SystemCursor SystemCursor { get; set; }
 
-    public string RelativePath { get; set; } = path;
+    public string RelativePath { get; set; }
 }

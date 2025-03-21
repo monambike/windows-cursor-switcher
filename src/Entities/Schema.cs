@@ -14,9 +14,9 @@ namespace WindowsCursorSwitcher.Entities
         {
             Name = name;
 
-            foreach(var systemCursor in SystemCursors.Cursors)
+            foreach(var systemCursor in MappingCursors.Cursors)
             {
-                var cursor = new Cursor(systemCursor, "");
+                var cursor = new Cursor { SystemCursor = systemCursor, RelativePath = "" };
                 Cursors.Add(cursor);
             }
         }

@@ -2,7 +2,6 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
-using System.Xml.Linq;
 using WindowsCursorSwitcher.Data;
 using WindowsCursorSwitcher.Managers;
 using WindowsCursorSwitcher.Utils;
@@ -45,10 +44,10 @@ namespace WindowsCursorSwitcher
         private void MainForm_Load(object sender, EventArgs e)
         {
             CheckIfRunAsAdministrator();
-            CheckSchemaTabsCount();
-            TabSchemaManager = new TabSchemaManager(tcSchemas, cmsSchema);
+            TabSchemaManager = new TabSchemaManager(tcSchemas, cmsSchema, bsSchema);
             tcSchemas.MouseUp += TabSchemaManager.TcSchemas_MouseUp;
-            TabSchemaManager.CreateTabsFromRegedit();
+            TabSchemaManager.UpdateSchemasFromRegedit();
+            CheckSchemaTabsCount();
         }
 
 
@@ -90,8 +89,32 @@ namespace WindowsCursorSwitcher
         {
             bool hasTabs = tcSchemas.TabPages.Count > 0;
 
+            //lblUserSchemasAndCursors.Text = $"User Schemas ({tcSchemas.TabPages.Count}) | Cursors ({itemList.Select(item => !string.IsNullOrWhiteSpace(item)).Count()})";
+
             btnSave.Enabled = hasTabs;
         }
 
+        private void btnSelectFromFolder_Click(object sender, EventArgs e)
+        {
+            var folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                var relativePath = Path.GetRelativePath(Application.StartupPath, folderBrowserDialog.SelectedPath);
+            }
+        }
+
+        private void btnSelectFromFile_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "Select a Cursor File",
+                Filter = "Cursor Files (*.cur;*.ani)|*.cur;*.ani",
+                Multiselect = false
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var relativePath = Path.GetRelativePath(Application.StartupPath, openFileDialog.FileName);
+            }
+        }
     }
 }

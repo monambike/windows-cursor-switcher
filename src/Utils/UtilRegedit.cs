@@ -45,14 +45,14 @@ namespace WindowsCursorSwitcher.Utils
                     List<RegeditKeyValue> regeditKeyValues = [];
                     foreach (var registryKeyValueName in registryKeyValueNames)
                     {
-                        RegeditKeyValue regeditKeyValue = new(registryKeyValueName, registryKey.GetValue(registryKeyValueName), registryKey.GetValueKind(registryKeyValueName));
+                        var regeditKeyValue = new RegeditKeyValue(registryKeyValueName, registryKey.GetValue(registryKeyValueName), registryKey.GetValueKind(registryKeyValueName));
                         regeditKeyValues.Add(regeditKeyValue);
                     }
 
                     return regeditKeyValues;
                 }
             }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            catch (Exception ex)
             {
                 Console.WriteLine($"An exception occurred: {ex.Message} while trying to read key values from Windows Registry Editor (regedit).");
                 throw;

@@ -53,11 +53,10 @@
             tlpSchemas = new TableLayoutPanel();
             tlpUserSchemas = new TableLayoutPanel();
             tcSchemas = new TabControl();
-            lblUserSchemas = new Label();
+            lblUserSchemasAndCursors = new Label();
             tlpCursors = new TableLayoutPanel();
             lblImportCursors = new Label();
             lblImportedCursors = new Label();
-            flpImportedCursors = new FlowLayoutPanel();
             tlpImportCursors = new TableLayoutPanel();
             btnSelectFromFolder = new Button();
             btnSelectFromFile = new Button();
@@ -67,6 +66,8 @@
             tssSchema = new ToolStripSeparator();
             tsmiDelete = new ToolStripMenuItem();
             tlpPaths = new TableLayoutPanel();
+            bsSchema = new BindingSource(components);
+            pnlImportedCursors = new Panel();
             tsMain.SuspendLayout();
             tlpMain.SuspendLayout();
             tlpFooter.SuspendLayout();
@@ -75,6 +76,7 @@
             tlpCursors.SuspendLayout();
             tlpImportCursors.SuspendLayout();
             cmsSchema.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)bsSchema).BeginInit();
             SuspendLayout();
             // 
             // tsMain
@@ -100,35 +102,35 @@
             // tsmiFileImportFromFolder
             // 
             tsmiFileImportFromFolder.Name = "tsmiFileImportFromFolder";
-            tsmiFileImportFromFolder.Size = new Size(180, 22);
+            tsmiFileImportFromFolder.Size = new Size(177, 22);
             tsmiFileImportFromFolder.Text = "Import From Folder";
             // 
             // tsmiFileImportFromFile
             // 
             tsmiFileImportFromFile.Name = "tsmiFileImportFromFile";
-            tsmiFileImportFromFile.Size = new Size(180, 22);
+            tsmiFileImportFromFile.Size = new Size(177, 22);
             tsmiFileImportFromFile.Text = "Import From Files";
             // 
             // tssFile1
             // 
             tssFile1.Name = "tssFile1";
-            tssFile1.Size = new Size(177, 6);
+            tssFile1.Size = new Size(174, 6);
             // 
             // tsimFileSave
             // 
             tsimFileSave.Name = "tsimFileSave";
-            tsimFileSave.Size = new Size(180, 22);
+            tsimFileSave.Size = new Size(177, 22);
             tsimFileSave.Text = "Save";
             // 
             // tssFile2
             // 
             tssFile2.Name = "tssFile2";
-            tssFile2.Size = new Size(177, 6);
+            tssFile2.Size = new Size(174, 6);
             // 
             // tsmiFileExit
             // 
             tsmiFileExit.Name = "tsmiFileExit";
-            tsmiFileExit.Size = new Size(180, 22);
+            tsmiFileExit.Size = new Size(177, 22);
             tsmiFileExit.Text = "Exit";
             // 
             // tsddbSchemas
@@ -144,24 +146,24 @@
             // tsmiSchemasRename
             // 
             tsmiSchemasRename.Name = "tsmiSchemasRename";
-            tsmiSchemasRename.Size = new Size(180, 22);
+            tsmiSchemasRename.Size = new Size(124, 22);
             tsmiSchemasRename.Text = "Rename";
             // 
             // tsmiSchemasDuplicate
             // 
             tsmiSchemasDuplicate.Name = "tsmiSchemasDuplicate";
-            tsmiSchemasDuplicate.Size = new Size(180, 22);
+            tsmiSchemasDuplicate.Size = new Size(124, 22);
             tsmiSchemasDuplicate.Text = "Duplicate";
             // 
             // tssSchemas
             // 
             tssSchemas.Name = "tssSchemas";
-            tssSchemas.Size = new Size(177, 6);
+            tssSchemas.Size = new Size(121, 6);
             // 
             // tsmiSchemasDelete
             // 
             tsmiSchemasDelete.Name = "tsmiSchemasDelete";
-            tsmiSchemasDelete.Size = new Size(180, 22);
+            tsmiSchemasDelete.Size = new Size(124, 22);
             tsmiSchemasDelete.Text = "Delete";
             // 
             // tsbHowToUse
@@ -270,7 +272,7 @@
             tlpUserSchemas.ColumnCount = 1;
             tlpUserSchemas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlpUserSchemas.Controls.Add(tcSchemas, 0, 0);
-            tlpUserSchemas.Controls.Add(lblUserSchemas, 0, 0);
+            tlpUserSchemas.Controls.Add(lblUserSchemasAndCursors, 0, 0);
             tlpUserSchemas.Dock = DockStyle.Fill;
             tlpUserSchemas.Location = new Point(392, 3);
             tlpUserSchemas.Name = "tlpUserSchemas";
@@ -289,14 +291,14 @@
             tcSchemas.Size = new Size(377, 480);
             tcSchemas.TabIndex = 0;
             // 
-            // lblUserSchemas
+            // lblUserSchemasAndCursors
             // 
-            lblUserSchemas.AutoSize = true;
-            lblUserSchemas.Location = new Point(3, 0);
-            lblUserSchemas.Name = "lblUserSchemas";
-            lblUserSchemas.Size = new Size(80, 15);
-            lblUserSchemas.TabIndex = 5;
-            lblUserSchemas.Text = "User Schemas";
+            lblUserSchemasAndCursors.AutoSize = true;
+            lblUserSchemasAndCursors.Location = new Point(3, 0);
+            lblUserSchemasAndCursors.Name = "lblUserSchemasAndCursors";
+            lblUserSchemasAndCursors.Size = new Size(80, 15);
+            lblUserSchemasAndCursors.TabIndex = 5;
+            lblUserSchemasAndCursors.Text = "User Schemas";
             // 
             // tlpCursors
             // 
@@ -304,8 +306,8 @@
             tlpCursors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlpCursors.Controls.Add(lblImportCursors, 0, 0);
             tlpCursors.Controls.Add(lblImportedCursors, 0, 2);
-            tlpCursors.Controls.Add(flpImportedCursors, 0, 3);
             tlpCursors.Controls.Add(tlpImportCursors, 0, 1);
+            tlpCursors.Controls.Add(pnlImportedCursors, 0, 3);
             tlpCursors.Dock = DockStyle.Fill;
             tlpCursors.Location = new Point(3, 3);
             tlpCursors.Name = "tlpCursors";
@@ -335,22 +337,15 @@
             lblImportedCursors.TabIndex = 1;
             lblImportedCursors.Text = "Imported Cursors";
             // 
-            // flpImportedCursors
-            // 
-            flpImportedCursors.Dock = DockStyle.Fill;
-            flpImportedCursors.Location = new Point(3, 70);
-            flpImportedCursors.Name = "flpImportedCursors";
-            flpImportedCursors.Size = new Size(377, 414);
-            flpImportedCursors.TabIndex = 2;
-            // 
             // tlpImportCursors
             // 
             tlpImportCursors.AutoSize = true;
-            tlpImportCursors.ColumnCount = 2;
+            tlpImportCursors.ColumnCount = 3;
             tlpImportCursors.ColumnStyles.Add(new ColumnStyle());
             tlpImportCursors.ColumnStyles.Add(new ColumnStyle());
-            tlpImportCursors.Controls.Add(btnSelectFromFolder, 0, 0);
-            tlpImportCursors.Controls.Add(btnSelectFromFile, 1, 0);
+            tlpImportCursors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpImportCursors.Controls.Add(btnSelectFromFolder, 1, 0);
+            tlpImportCursors.Controls.Add(btnSelectFromFile, 0, 0);
             tlpImportCursors.Dock = DockStyle.Fill;
             tlpImportCursors.Location = new Point(3, 18);
             tlpImportCursors.Name = "tlpImportCursors";
@@ -362,22 +357,30 @@
             // btnSelectFromFolder
             // 
             btnSelectFromFolder.AutoSize = true;
-            btnSelectFromFolder.Location = new Point(3, 3);
+            btnSelectFromFolder.Image = Properties.Resources.folder;
+            btnSelectFromFolder.Location = new Point(173, 3);
             btnSelectFromFolder.Name = "btnSelectFromFolder";
-            btnSelectFromFolder.Size = new Size(158, 25);
+            btnSelectFromFolder.Size = new Size(174, 25);
             btnSelectFromFolder.TabIndex = 0;
             btnSelectFromFolder.Text = "Select Cursors From Folder";
+            btnSelectFromFolder.TextAlign = ContentAlignment.MiddleLeft;
+            btnSelectFromFolder.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnSelectFromFolder.UseVisualStyleBackColor = true;
+            btnSelectFromFolder.Click += btnSelectFromFolder_Click;
             // 
             // btnSelectFromFile
             // 
             btnSelectFromFile.AutoSize = true;
-            btnSelectFromFile.Location = new Point(167, 3);
+            btnSelectFromFile.Image = Properties.Resources.filled;
+            btnSelectFromFile.Location = new Point(3, 3);
             btnSelectFromFile.Name = "btnSelectFromFile";
-            btnSelectFromFile.Size = new Size(148, 25);
+            btnSelectFromFile.Size = new Size(164, 25);
             btnSelectFromFile.TabIndex = 1;
             btnSelectFromFile.Text = "Select Cursors From Files";
+            btnSelectFromFile.TextAlign = ContentAlignment.MiddleLeft;
+            btnSelectFromFile.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnSelectFromFile.UseVisualStyleBackColor = true;
+            btnSelectFromFile.Click += btnSelectFromFile_Click;
             // 
             // cmsSchema
             // 
@@ -419,6 +422,14 @@
             tlpPaths.Size = new Size(200, 100);
             tlpPaths.TabIndex = 0;
             // 
+            // pnlImportedCursors
+            // 
+            pnlImportedCursors.Dock = DockStyle.Fill;
+            pnlImportedCursors.Location = new Point(3, 70);
+            pnlImportedCursors.Name = "pnlImportedCursors";
+            pnlImportedCursors.Size = new Size(377, 414);
+            pnlImportedCursors.TabIndex = 4;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -446,6 +457,7 @@
             tlpImportCursors.ResumeLayout(false);
             tlpImportCursors.PerformLayout();
             cmsSchema.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)bsSchema).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -458,7 +470,7 @@
         private TableLayoutPanel tlpMain;
         private TableLayoutPanel tlpUserSchemas;
         private TabControl tcSchemas;
-        private Label lblUserSchemas;
+        private Label lblUserSchemasAndCursors;
         private TableLayoutPanel tlpPaths;
         private ContextMenuStrip cmsSchema;
         private ToolStripMenuItem tsmiRename;
@@ -474,7 +486,6 @@
         private TableLayoutPanel tlpCursors;
         private Label lblImportCursors;
         private Label lblImportedCursors;
-        private FlowLayoutPanel flpImportedCursors;
         private TableLayoutPanel tlpImportCursors;
         private Button btnSelectFromFolder;
         private Button btnSelectFromFile;
@@ -490,5 +501,7 @@
         private ToolStripMenuItem tsmiSchemasDuplicate;
         private ToolStripSeparator tssSchemas;
         private ToolStripMenuItem tsmiSchemasDelete;
+        private BindingSource bsSchema;
+        private Panel pnlImportedCursors;
     }
 }
