@@ -90,11 +90,15 @@ namespace WindowsCursorSwitcher.Managers
                         {
                             var openFileDialog = new OpenFileDialog()
                             {
-                                Title = "Select a Cursor File", // Título da janela
-                                Filter = "Cursor Files (*.cur;*.ani)|*.cur;*.ani", // Filtros para tipos de arquivo
-                                Multiselect = false // Defina como true se quiser permitir múltiplos arquivos
+                                Title = "Select a Cursor File",
+                                Filter = "Cursor Files (*.cur;*.ani)|*.cur;*.ani",
+                                Multiselect = false
                             };
-                            if (openFileDialog.ShowDialog() == DialogResult.OK) textBox.Text = openFileDialog.FileName;
+                            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                            {
+                                var relativePath = Path.GetRelativePath(Application.StartupPath, openFileDialog.FileName);
+                                textBox.Text = relativePath;
+                            }
                         };
                     }
                     newTab.Controls.Add(tableLayoutPanel);
