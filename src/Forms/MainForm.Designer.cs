@@ -60,6 +60,7 @@
             tlpImportCursors = new TableLayoutPanel();
             btnSelectFromFolder = new Button();
             btnSelectFromFile = new Button();
+            pnlImportedCursors = new Panel();
             cmsSchema = new ContextMenuStrip(components);
             tsmiRename = new ToolStripMenuItem();
             tsmiDuplicate = new ToolStripMenuItem();
@@ -67,7 +68,6 @@
             tsmiDelete = new ToolStripMenuItem();
             tlpPaths = new TableLayoutPanel();
             bsSchema = new BindingSource(components);
-            pnlImportedCursors = new Panel();
             tsMain.SuspendLayout();
             tlpMain.SuspendLayout();
             tlpFooter.SuspendLayout();
@@ -382,6 +382,16 @@
             btnSelectFromFile.UseVisualStyleBackColor = true;
             btnSelectFromFile.Click += btnSelectFromFile_Click;
             // 
+            // pnlImportedCursors
+            // 
+            pnlImportedCursors.AutoScroll = true;
+            pnlImportedCursors.AutoSize = true;
+            pnlImportedCursors.Dock = DockStyle.Fill;
+            pnlImportedCursors.Location = new Point(3, 70);
+            pnlImportedCursors.Name = "pnlImportedCursors";
+            pnlImportedCursors.Size = new Size(377, 414);
+            pnlImportedCursors.TabIndex = 4;
+            // 
             // cmsSchema
             // 
             cmsSchema.Items.AddRange(new ToolStripItem[] { tsmiRename, tsmiDuplicate, tssSchema, tsmiDelete });
@@ -421,14 +431,6 @@
             tlpPaths.RowCount = 2;
             tlpPaths.Size = new Size(200, 100);
             tlpPaths.TabIndex = 0;
-            // 
-            // pnlImportedCursors
-            // 
-            pnlImportedCursors.Dock = DockStyle.Fill;
-            pnlImportedCursors.Location = new Point(3, 70);
-            pnlImportedCursors.Name = "pnlImportedCursors";
-            pnlImportedCursors.Size = new Size(377, 414);
-            pnlImportedCursors.TabIndex = 4;
             // 
             // MainForm
             // 

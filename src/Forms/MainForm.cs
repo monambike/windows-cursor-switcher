@@ -2,7 +2,9 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using System.Windows.Forms;
 using WindowsCursorSwitcher.Data;
+using WindowsCursorSwitcher.Entities;
 using WindowsCursorSwitcher.Managers;
 using WindowsCursorSwitcher.Utils;
 
@@ -44,6 +46,7 @@ namespace WindowsCursorSwitcher
         private void MainForm_Load(object sender, EventArgs e)
         {
             CheckIfRunAsAdministrator();
+            CreatePanel();
             TabSchemaManager = new TabSchemaManager(tcSchemas, cmsSchema, bsSchema);
             tcSchemas.MouseUp += TabSchemaManager.TcSchemas_MouseUp;
             TabSchemaManager.UpdateSchemasFromRegedit();
@@ -114,6 +117,88 @@ namespace WindowsCursorSwitcher
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var relativePath = Path.GetRelativePath(Application.StartupPath, openFileDialog.FileName);
+            }
+        }
+
+        private void CreatePanel()
+        {
+            string folderPath = "../../../MyCursors/";
+            
+            string[] directories = [];
+            try
+            {
+                directories = Directory.GetDirectories(folderPath);
+            }
+            catch (DirectoryNotFoundException)
+            {
+
+                Console.WriteLine($@"Directory ""{folderPath}"" was not found while trying to search for cursors.");
+            }
+
+            foreach (var directory in directories)
+            {
+                (string[] curFiles, string[]aniFiles) = (Directory.GetFiles(directory, "*.cur"), Directory.GetFiles(directory, "*.ani"));
+                string[] files = [.. curFiles, .. aniFiles];
+
+                var tableLayoutPanel = new TableLayoutPanel
+                {
+                    AutoSize = true,
+                    ColumnCount = 1,
+                    ColumnStyles = { new(SizeType.AutoSize), new(SizeType.Percent, 100) },
+                    Dock = DockStyle.Fill,
+                    RowCount = 2
+                };
+                pnlImportedCursors.Controls.Add(tableLayoutPanel);
+
+                var label = new Label()
+                {
+                    Dock = DockStyle.Fill,
+                    Text = $"{Path.GetFileName(directory)}"
+                };
+                tableLayoutPanel.Controls.Add(label, 0, 0);
+
+                var flowLayoutPanel = new FlowLayoutPanel()
+                {
+                    Dock = DockStyle.Fill
+                };
+                tableLayoutPanel.Controls.Add(flowLayoutPanel, 0, 1);
+                foreach (var file in files)
+                {
+
+                    var tableLayoutPanelInner = new TableLayoutPanel
+                    {
+                        AutoSize = true,
+                        ColumnCount = 1,
+                        ColumnStyles = { new(SizeType.Absolute, 64) },
+                        Dock = DockStyle.Fill,
+                        RowCount = 3,
+                        RowStyles = { new(SizeType.Absolute, 64) }
+                    };
+                    flowLayoutPanel.Controls.Add(tableLayoutPanelInner);
+
+                    Icon icon = Icon.ExtractAssociatedIcon(file);
+                    Bitmap bitmap = icon.ToBitmap();
+                    var image = new PictureBox
+                    {
+                        Dock = DockStyle.Fill,
+                        Image = bitmap
+                    };
+                    tableLayoutPanelInner.Controls.Add(image, 0, 0);
+
+                    var name = new Label()
+                    {
+                        Dock = DockStyle.Fill,
+                        Text = $"{Path.GetFileName(directory)}"
+                    };
+                    tableLayoutPanelInner.Controls.Add(name, 0, 1);
+
+                    var path = new Label()
+                    {
+                        Dock = DockStyle.Fill,
+                        Text = $"{directory}"
+                    };
+                    tableLayoutPanelInner.Controls.Add(path, 0, 2);
+                }
             }
         }
     }

@@ -1,0 +1,53 @@
+;anya Cursor (Dark)
+;
+;Glimy
+
+[Version]
+signature="$CHICAGO$"
+
+[DefaultInstall]
+CopyFiles = Scheme.Cur
+AddReg    = Scheme.Reg
+
+[DestinationDirs]
+Scheme.Cur = 10,"%CUR_DIR%"
+
+[Scheme.Reg]
+HKCU,"Control Panel\Cursors\Schemes","%SCHEME_NAME%",,"%10%\%CUR_DIR%\%pointer%,%10%\%CUR_DIR%\%help%,%10%\%CUR_DIR%\%work%,%10%\%CUR_DIR%\%busy%,%10%\%CUR_DIR%\%Cross%,%10%\%CUR_DIR%\%Text%,%10%\%CUR_DIR%\%Hand%,%10%\%CUR_DIR%\%Unavailable%,%10%\%CUR_DIR%\%Vert%,%10%\%CUR_DIR%\%Horz%,%10%\%CUR_DIR%\%Dgn1%,%10%\%CUR_DIR%\%Dgn2%,%10%\%CUR_DIR%\%move%,%10%\%CUR_DIR%\%alternate%,%10%\%CUR_DIR%\%link%"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Runonce\Setup\","",,"rundll32.exe shell32.dll,Control_RunDLL main.cpl @0,1"
+
+[Scheme.Cur]
+UpArrow.cur
+anya_busy.ani
+anya_bevel1.ani
+anya_bevel2.ani
+Handwriting.cur
+anya_help.ani
+anya_horizontal.ani
+anya_link-selection.ani
+anya_move.ani
+anya_selection.ani
+anya_precise-selection.ani
+anya_text-selection.ani
+anya_unavailable.ani
+anya_vertical.ani
+anya_backgroundprocess.ani
+
+[Strings]
+CUR_DIR     = "Cursors\Anya Cursor (Pink)"
+SCHEME_NAME = "Anya Cursor (Pink)"
+alternate   = "UpArrow.cur"
+busy    = "anya_busy.ani"
+cross   = "anya_precise-selection.ani"
+dgn1    = "anya_bevel1.ani"
+dgn2    = "anya_bevel2.ani"
+hand    = "Handwriting.cur"
+help    = "anya_help.ani"
+horz    = "anya_horizontal.ani"
+link    = "anya_link-selection.ani"
+move    = "anya_move.ani"
+pointer = "anya_selection.ani"
+text    = "anya_text-selection.ani"
+unavailable = "anya_unavailable.ani"
+vert    = "anya_vertical.ani"
+work    = "anya_backgroundprocess".ani
