@@ -2,6 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using System;
 using System.Diagnostics;
 using WindowsCursorSwitcher.Data;
 using WindowsCursorSwitcher.Managers;
@@ -155,16 +156,25 @@ namespace WindowsCursorSwitcher
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     ColumnCount = 1,
-                    RowCount = 2
+                    RowCount = 3
                 };
                 tlpImportedCursorGroups.Controls.Add(tlpImportedCursorGroup, 0, directoryIndex);
 
                 var lblCursorGroup = new Label
                 {
                     Dock = DockStyle.Fill,
+                    Font = new Font(DefaultFont, FontStyle.Bold),
                     Text = $"{Path.GetFileName(directories[directoryIndex])}"
                 };
                 tlpImportedCursorGroup.Controls.Add(lblCursorGroup, 0, 0);
+
+                var pnlCursorGroupSeparator = new Panel
+                {
+                    Height = 1,
+                    Dock = DockStyle.Top,
+                    BackColor = Color.Gray
+                };
+                tlpImportedCursorGroup.Controls.Add(pnlCursorGroupSeparator, 0, 1);
 
                 var flpCursors = new FlowLayoutPanel
                 {
@@ -172,7 +182,7 @@ namespace WindowsCursorSwitcher
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     FlowDirection = FlowDirection.LeftToRight
                 };
-                tlpImportedCursorGroup.Controls.Add(flpCursors, 0, 1);
+                tlpImportedCursorGroup.Controls.Add(flpCursors, 0, 2);
                 foreach (var file in files)
                 {
                     string fileAbsolutePath = Path.GetFullPath(file);
