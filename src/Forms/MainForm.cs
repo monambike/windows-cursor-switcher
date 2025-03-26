@@ -2,9 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
-using System;
-using System.Diagnostics;
-using WindowsCursorSwitcher.Data;
+using WindowsCursorSwitcher.Helpers;
 using WindowsCursorSwitcher.Managers;
 using WindowsCursorSwitcher.Utils;
 
@@ -16,57 +14,23 @@ namespace WindowsCursorSwitcher
 
         public MainForm() => InitializeComponent();
 
-
-        private void UpdateCursors(string name, string value)
-        {
-
-
-            UtilRegedit.ModifyKeyValue(name, value);
-
-            MessageBox.Show($"Name: {name}{Environment.NewLine + Environment.NewLine}Cursor Paths: {value}");
-        }
-        private void CheckIfRunAsAdministrator()
-        {
-            if (!UtilApplication.IsRunAsAdministrator())
-            {
-
-                var dialogResult =
-                    MessageBox.Show(
-                        $@"The app needs to be run in administrator mode in order to change the ""Windows Variables"" and change the cursors."
-                        + Environment.NewLine
-                        + "Right Click the Executable > Properties > Shortcut > Advanced > Run as Administrator",
-                        "Administrator Privileges Required",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                if (dialogResult == DialogResult.OK) Application.Exit();
-            }
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
-            CheckIfRunAsAdministrator();
-            CreatePanel();
+            // Validates if the application is run as administrator.
+            UtilApplication.ValidateIfRunAsAdministrator();
+
+            // Updates imported cursors panel.
+            var tabImportCursors = new TabImportCursors(pnlImportedCursors);
+            tabImportCursors.UpdateImportedCursors();
+
+            // Updates user windows schemas using data from RegEdit.
             TabSchemaManager = new TabSchemaManager(tcSchemas, cmsSchema, bsSchema);
             tcSchemas.MouseUp += TabSchemaManager.TcSchemas_MouseUp;
             TabSchemaManager.UpdateSchemasFromRegedit();
+
+            // Checks how much tabs are in schema tab.
             CheckSchemaTabsCount();
         }
-
-
-        private void tsbView_Click(object sender, EventArgs e)
-        {
-            string names = "";
-            foreach (var value in UtilRegedit.ReadKeyValues()) names += value + Environment.NewLine;
-
-            MessageBox.Show(names);
-        }
-
-        private void tsbUpdate_Click(object sender, EventArgs e)
-        {
-            var testSchema = TestCursors.TestSchema;
-        }
-
 
         private void tslHowToUse_Click(object sender, EventArgs e) => UtilMessages.ShowHowToUseMessage();
 
@@ -80,6 +44,13 @@ namespace WindowsCursorSwitcher
 
         private void tcSchemas_SelectedIndexChanged(object sender, EventArgs e) => CheckSchemaTabsCount();
 
+        private void btnSelectFromFolder_Click(object sender, EventArgs e) => FileHelper.OpenFolderDialog();
+
+        private void btnSelectFromFile_Click(object sender, EventArgs e) => FileHelper.OpenFileDialog();
+
+        private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => FileHelper.OpenWindowsMousePropertiesWindow();
+
+
         internal void Save()
         {
             int selectedIndex = tcSchemas.SelectedIndex;
@@ -92,177 +63,7 @@ namespace WindowsCursorSwitcher
         {
             bool hasTabs = tcSchemas.TabPages.Count > 0;
 
-            //lblUserSchemasAndCursors.Text = $"User Schemas ({tcSchemas.TabPages.Count}) | Cursors ({itemList.Select(item => !string.IsNullOrWhiteSpace(item)).Count()})";
-
             btnSave.Enabled = hasTabs;
         }
-
-        private void btnSelectFromFolder_Click(object sender, EventArgs e)
-        {
-            var folderBrowserDialog = new FolderBrowserDialog();
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                var relativePath = Path.GetRelativePath(Application.StartupPath, folderBrowserDialog.SelectedPath);
-            }
-        }
-
-        private void btnSelectFromFile_Click(object sender, EventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog()
-            {
-                Title = "Select a Cursor File",
-                Filter = "Cursor Files (*.cur;*.ani)|*.cur;*.ani",
-                Multiselect = false
-            };
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var relativePath = Path.GetRelativePath(Application.StartupPath, openFileDialog.FileName);
-            }
-        }
-
-        private void CreatePanel()
-        {
-            string folderPath = "../../../MyCursors/";
-
-            string[] directories = [];
-            try
-            {
-                directories = Directory.GetDirectories(folderPath);
-            }
-            catch (DirectoryNotFoundException)
-            {
-
-                Console.WriteLine($@"Directory ""{folderPath}"" was not found while trying to search for cursors.");
-            }
-
-            for (int directoryIndex = 0; directoryIndex < directories.Length; directoryIndex++)
-            {
-                (string[] curFiles, string[] aniFiles) = (Directory.GetFiles(directories[directoryIndex], "*.cur"), Directory.GetFiles(directories[directoryIndex], "*.ani"));
-                string[] files = [.. curFiles, .. aniFiles];
-
-                var tlpImportedCursorGroups = new TableLayoutPanel
-                {
-                    AutoScroll = true,
-                    AutoSize = true,
-                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    Dock = DockStyle.Top,
-                    ColumnCount = 1,
-                    RowCount = directories.Length
-                };
-                pnlImportedCursors.Controls.Add(tlpImportedCursorGroups);
-
-                var tlpImportedCursorGroup = new TableLayoutPanel
-                {
-                    AutoSize = true,
-                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    ColumnCount = 1,
-                    RowCount = 3
-                };
-                tlpImportedCursorGroups.Controls.Add(tlpImportedCursorGroup, 0, directoryIndex);
-
-                var lblCursorGroup = new Label
-                {
-                    Dock = DockStyle.Fill,
-                    Font = new Font(DefaultFont, FontStyle.Bold),
-                    Text = $"{Path.GetFileName(directories[directoryIndex])}"
-                };
-                tlpImportedCursorGroup.Controls.Add(lblCursorGroup, 0, 0);
-
-                var pnlCursorGroupSeparator = new Panel
-                {
-                    Height = 1,
-                    Dock = DockStyle.Top,
-                    BackColor = Color.Gray
-                };
-                tlpImportedCursorGroup.Controls.Add(pnlCursorGroupSeparator, 0, 1);
-
-                var flpCursors = new FlowLayoutPanel
-                {
-                    AutoSize = true,
-                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    FlowDirection = FlowDirection.LeftToRight
-                };
-                tlpImportedCursorGroup.Controls.Add(flpCursors, 0, 2);
-                foreach (var file in files)
-                {
-                    string fileAbsolutePath = Path.GetFullPath(file);
-                    var cursorFilePath = fileAbsolutePath;
-
-                    var cmsCursor = new ContextMenuStrip
-                    {
-                        Items =
-                        {
-                            new ToolStripMenuItem("Open File Location", null, (sender, e) => OpenFileLocation(fileAbsolutePath)),
-                            new ToolStripSeparator(),
-                            new ToolStripMenuItem("Copy File Location", null, (sender, e) => Clipboard.SetText(fileAbsolutePath))
-                        }
-                    };
-
-                    var tlpCursor = new TableLayoutPanel
-                    {
-                        AutoSize = true,
-                        AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                        ColumnCount = 1,
-                        Width = 150,
-                        Height = 150,
-                        ContextMenuStrip = cmsCursor,
-                        Dock = DockStyle.Fill,
-                        RowCount = 3,
-                    };
-                    flpCursors.Controls.Add(tlpCursor);
-
-                    Icon icon = Icon.ExtractAssociatedIcon(file);
-                    Bitmap bitmap = icon.ToBitmap();
-
-                    var pbCursorPreview = new PictureBox
-                    {
-                        SizeMode = PictureBoxSizeMode.CenterImage,
-                        Dock = DockStyle.Fill,
-                        Image = bitmap
-                    };
-                    tlpCursor.Controls.Add(pbCursorPreview, 0, 0);
-
-                    var cursorFileName = Path.GetFileName(file);
-
-                    var lblCursorFileName = new Label
-                    {
-                        Dock = DockStyle.Fill,
-                        Text = cursorFileName
-                    };
-                    tlpCursor.Controls.Add(lblCursorFileName, 0, 1);
-
-                    var lblCursorFilePath = new Label
-                    {
-                        Dock = DockStyle.Fill,
-                        Text = cursorFilePath
-                    };
-                    tlpCursor.Controls.Add(lblCursorFilePath, 0, 2);
-
-                    var cursorToolTip = new ToolTip
-                    {
-                        InitialDelay = 1000,
-                        ToolTipIcon = ToolTipIcon.Info,
-                        ToolTipTitle = cursorFileName
-                    };
-                    cursorToolTip.SetToolTip(lblCursorFileName, cursorFilePath);
-                    cursorToolTip.SetToolTip(lblCursorFilePath, cursorFilePath);
-                }
-            }
-        }
-        private void OpenFileLocation(string filePath)
-        {
-            try
-            {
-                Process.Start("explorer.exe", $"/select,\"{filePath}\"");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error opening file location: {ex.Message}");
-            }
-        }
-
-        private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => OpenWindowsMouseProperties();
-
-        private void OpenWindowsMouseProperties() => Process.Start("control", "main.cpl,,1");
     }
 }

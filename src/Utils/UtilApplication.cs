@@ -6,9 +6,27 @@ using System.Security.Principal;
 
 namespace WindowsCursorSwitcher.Utils
 {
-    internal class UtilApplication
+    internal static class UtilApplication
     {
-        public static bool IsRunAsAdministrator()
+        internal static bool IsRunAsAdministrator()
             => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+
+        internal static void ValidateIfRunAsAdministrator()
+        {
+            if (!IsRunAsAdministrator())
+            {
+
+                var dialogResult =
+                    MessageBox.Show(
+                        $@"The app needs to be run in administrator mode in order to change the ""Windows Variables"" and change the cursors."
+                        + Environment.NewLine
+                        + "Right Click the Executable > Properties > Shortcut > Advanced > Run as Administrator",
+                        "Administrator Privileges Required",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                if (dialogResult == DialogResult.OK) Application.Exit();
+            }
+        }
     }
 }
