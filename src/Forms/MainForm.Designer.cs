@@ -48,20 +48,20 @@
             tsbAbout = new ToolStripButton();
             tsbExit = new ToolStripButton();
             tlpMain = new TableLayoutPanel();
-            tlpFooter = new TableLayoutPanel();
-            btnSave = new Button();
-            btnExit = new Button();
-            tlpSchemas = new TableLayoutPanel();
-            tlpUserSchemas = new TableLayoutPanel();
-            tcSchemas = new TabControl();
-            lblWindowsUserSchemas = new Label();
+            splitContainer1 = new SplitContainer();
             tlpCursors = new TableLayoutPanel();
             lblImportCursors = new Label();
             lblImportedCursors = new Label();
             tlpImportCursors = new TableLayoutPanel();
             btnSelectFromFolder = new Button();
             btnSelectFromFile = new Button();
-            tlpImportedCursors = new TableLayoutPanel();
+            pnlImportedCursors = new Panel();
+            tlpUserSchemas = new TableLayoutPanel();
+            tcSchemas = new TabControl();
+            lblWindowsUserSchemas = new Label();
+            tlpFooter = new TableLayoutPanel();
+            btnSave = new Button();
+            btnExit = new Button();
             cmsSchema = new ContextMenuStrip(components);
             tsmiRename = new ToolStripMenuItem();
             tsmiDuplicate = new ToolStripMenuItem();
@@ -71,11 +71,14 @@
             bsSchema = new BindingSource(components);
             tsMain.SuspendLayout();
             tlpMain.SuspendLayout();
-            tlpFooter.SuspendLayout();
-            tlpSchemas.SuspendLayout();
-            tlpUserSchemas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             tlpCursors.SuspendLayout();
             tlpImportCursors.SuspendLayout();
+            tlpUserSchemas.SuspendLayout();
+            tlpFooter.SuspendLayout();
             cmsSchema.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bsSchema).BeginInit();
             SuspendLayout();
@@ -210,106 +213,34 @@
             // 
             tlpMain.ColumnCount = 1;
             tlpMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpMain.Controls.Add(splitContainer1, 0, 0);
             tlpMain.Controls.Add(tlpFooter, 0, 1);
-            tlpMain.Controls.Add(tlpSchemas, 0, 0);
             tlpMain.Dock = DockStyle.Fill;
             tlpMain.Location = new Point(0, 25);
             tlpMain.Name = "tlpMain";
-            tlpMain.RowCount = 2;
+            tlpMain.RowCount = 3;
             tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tlpMain.RowStyles.Add(new RowStyle());
+            tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tlpMain.Size = new Size(784, 536);
             tlpMain.TabIndex = 2;
             // 
-            // tlpFooter
+            // splitContainer1
             // 
-            tlpFooter.AutoSize = true;
-            tlpFooter.ColumnCount = 3;
-            tlpFooter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlpFooter.ColumnStyles.Add(new ColumnStyle());
-            tlpFooter.ColumnStyles.Add(new ColumnStyle());
-            tlpFooter.Controls.Add(btnSave, 2, 0);
-            tlpFooter.Controls.Add(btnExit, 1, 0);
-            tlpFooter.Dock = DockStyle.Fill;
-            tlpFooter.Location = new Point(3, 502);
-            tlpFooter.Name = "tlpFooter";
-            tlpFooter.RowCount = 1;
-            tlpFooter.RowStyles.Add(new RowStyle());
-            tlpFooter.Size = new Size(778, 31);
-            tlpFooter.TabIndex = 6;
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(3, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
-            // btnSave
+            // splitContainer1.Panel1
             // 
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.AutoSize = true;
-            btnSave.Location = new Point(700, 3);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(75, 25);
-            btnSave.TabIndex = 4;
-            btnSave.Text = "&Save";
-            btnSave.UseVisualStyleBackColor = true;
-            btnSave.Click += btnSave_Click;
+            splitContainer1.Panel1.Controls.Add(tlpCursors);
             // 
-            // btnExit
+            // splitContainer1.Panel2
             // 
-            btnExit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnExit.AutoSize = true;
-            btnExit.Location = new Point(619, 3);
-            btnExit.Name = "btnExit";
-            btnExit.Size = new Size(75, 25);
-            btnExit.TabIndex = 5;
-            btnExit.Text = "&Exit";
-            btnExit.UseVisualStyleBackColor = true;
-            btnExit.Click += btnExit_Click;
-            // 
-            // tlpSchemas
-            // 
-            tlpSchemas.ColumnCount = 2;
-            tlpSchemas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpSchemas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpSchemas.Controls.Add(tlpUserSchemas, 1, 0);
-            tlpSchemas.Controls.Add(tlpCursors, 0, 0);
-            tlpSchemas.Dock = DockStyle.Fill;
-            tlpSchemas.Location = new Point(3, 3);
-            tlpSchemas.Name = "tlpSchemas";
-            tlpSchemas.RowCount = 1;
-            tlpSchemas.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpSchemas.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpSchemas.Size = new Size(778, 493);
-            tlpSchemas.TabIndex = 7;
-            // 
-            // tlpUserSchemas
-            // 
-            tlpUserSchemas.ColumnCount = 1;
-            tlpUserSchemas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlpUserSchemas.Controls.Add(tcSchemas, 0, 0);
-            tlpUserSchemas.Controls.Add(lblWindowsUserSchemas, 0, 0);
-            tlpUserSchemas.Dock = DockStyle.Fill;
-            tlpUserSchemas.Location = new Point(392, 3);
-            tlpUserSchemas.Name = "tlpUserSchemas";
-            tlpUserSchemas.RowCount = 2;
-            tlpUserSchemas.RowStyles.Add(new RowStyle());
-            tlpUserSchemas.RowStyles.Add(new RowStyle());
-            tlpUserSchemas.Size = new Size(383, 487);
-            tlpUserSchemas.TabIndex = 6;
-            // 
-            // tcSchemas
-            // 
-            tcSchemas.Dock = DockStyle.Fill;
-            tcSchemas.Location = new Point(3, 18);
-            tcSchemas.Name = "tcSchemas";
-            tcSchemas.SelectedIndex = 0;
-            tcSchemas.Size = new Size(377, 480);
-            tcSchemas.TabIndex = 0;
-            // 
-            // lblWindowsUserSchemas
-            // 
-            lblWindowsUserSchemas.AutoSize = true;
-            lblWindowsUserSchemas.Location = new Point(3, 0);
-            lblWindowsUserSchemas.Name = "lblWindowsUserSchemas";
-            lblWindowsUserSchemas.Size = new Size(132, 15);
-            lblWindowsUserSchemas.TabIndex = 5;
-            lblWindowsUserSchemas.Text = "Windows User Schemas";
+            splitContainer1.Panel2.Controls.Add(tlpUserSchemas);
+            splitContainer1.Size = new Size(778, 473);
+            splitContainer1.SplitterDistance = 366;
+            splitContainer1.TabIndex = 6;
             // 
             // tlpCursors
             // 
@@ -318,16 +249,16 @@
             tlpCursors.Controls.Add(lblImportCursors, 0, 0);
             tlpCursors.Controls.Add(lblImportedCursors, 0, 2);
             tlpCursors.Controls.Add(tlpImportCursors, 0, 1);
-            tlpCursors.Controls.Add(tlpImportedCursors, 0, 3);
+            tlpCursors.Controls.Add(pnlImportedCursors, 0, 3);
             tlpCursors.Dock = DockStyle.Fill;
-            tlpCursors.Location = new Point(3, 3);
+            tlpCursors.Location = new Point(0, 0);
             tlpCursors.Name = "tlpCursors";
             tlpCursors.RowCount = 4;
             tlpCursors.RowStyles.Add(new RowStyle());
             tlpCursors.RowStyles.Add(new RowStyle());
             tlpCursors.RowStyles.Add(new RowStyle());
             tlpCursors.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlpCursors.Size = new Size(383, 487);
+            tlpCursors.Size = new Size(366, 473);
             tlpCursors.TabIndex = 7;
             // 
             // lblImportCursors
@@ -362,7 +293,7 @@
             tlpImportCursors.Name = "tlpImportCursors";
             tlpImportCursors.RowCount = 1;
             tlpImportCursors.RowStyles.Add(new RowStyle());
-            tlpImportCursors.Size = new Size(377, 31);
+            tlpImportCursors.Size = new Size(360, 31);
             tlpImportCursors.TabIndex = 3;
             // 
             // btnSelectFromFolder
@@ -393,22 +324,91 @@
             btnSelectFromFile.UseVisualStyleBackColor = true;
             btnSelectFromFile.Click += btnSelectFromFile_Click;
             // 
-            // tlpImportedCursors
+            // pnlImportedCursors
             // 
-            tlpImportedCursors.AutoScroll = true;
-            tlpImportedCursors.AutoSize = true;
-            tlpImportedCursors.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tlpImportedCursors.ColumnCount = 1;
-            tlpImportedCursors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpImportedCursors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpImportedCursors.Dock = DockStyle.Top;
-            tlpImportedCursors.Location = new Point(3, 70);
-            tlpImportedCursors.Name = "tlpImportedCursors";
-            tlpImportedCursors.RowCount = 1;
-            tlpImportedCursors.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpImportedCursors.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpImportedCursors.Size = new Size(377, 0);
-            tlpImportedCursors.TabIndex = 4;
+            pnlImportedCursors.AutoScroll = true;
+            pnlImportedCursors.AutoSize = true;
+            pnlImportedCursors.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            pnlImportedCursors.BackColor = SystemColors.Control;
+            pnlImportedCursors.Dock = DockStyle.Fill;
+            pnlImportedCursors.Location = new Point(3, 70);
+            pnlImportedCursors.Name = "pnlImportedCursors";
+            pnlImportedCursors.Size = new Size(360, 400);
+            pnlImportedCursors.TabIndex = 4;
+            // 
+            // tlpUserSchemas
+            // 
+            tlpUserSchemas.ColumnCount = 1;
+            tlpUserSchemas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpUserSchemas.Controls.Add(tcSchemas, 0, 0);
+            tlpUserSchemas.Controls.Add(lblWindowsUserSchemas, 0, 0);
+            tlpUserSchemas.Dock = DockStyle.Fill;
+            tlpUserSchemas.Location = new Point(0, 0);
+            tlpUserSchemas.Name = "tlpUserSchemas";
+            tlpUserSchemas.RowCount = 2;
+            tlpUserSchemas.RowStyles.Add(new RowStyle());
+            tlpUserSchemas.RowStyles.Add(new RowStyle());
+            tlpUserSchemas.Size = new Size(408, 473);
+            tlpUserSchemas.TabIndex = 6;
+            // 
+            // tcSchemas
+            // 
+            tcSchemas.Dock = DockStyle.Fill;
+            tcSchemas.Location = new Point(3, 18);
+            tcSchemas.Name = "tcSchemas";
+            tcSchemas.SelectedIndex = 0;
+            tcSchemas.Size = new Size(402, 480);
+            tcSchemas.TabIndex = 0;
+            // 
+            // lblWindowsUserSchemas
+            // 
+            lblWindowsUserSchemas.AutoSize = true;
+            lblWindowsUserSchemas.Location = new Point(3, 0);
+            lblWindowsUserSchemas.Name = "lblWindowsUserSchemas";
+            lblWindowsUserSchemas.Size = new Size(132, 15);
+            lblWindowsUserSchemas.TabIndex = 5;
+            lblWindowsUserSchemas.Text = "Windows User Schemas";
+            // 
+            // tlpFooter
+            // 
+            tlpFooter.AutoSize = true;
+            tlpFooter.ColumnCount = 3;
+            tlpFooter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpFooter.ColumnStyles.Add(new ColumnStyle());
+            tlpFooter.ColumnStyles.Add(new ColumnStyle());
+            tlpFooter.Controls.Add(btnSave, 2, 0);
+            tlpFooter.Controls.Add(btnExit, 1, 0);
+            tlpFooter.Dock = DockStyle.Fill;
+            tlpFooter.Location = new Point(3, 482);
+            tlpFooter.Name = "tlpFooter";
+            tlpFooter.RowCount = 1;
+            tlpFooter.RowStyles.Add(new RowStyle());
+            tlpFooter.Size = new Size(778, 31);
+            tlpFooter.TabIndex = 6;
+            // 
+            // btnSave
+            // 
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSave.AutoSize = true;
+            btnSave.Location = new Point(700, 3);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(75, 25);
+            btnSave.TabIndex = 4;
+            btnSave.Text = "&Save";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnExit
+            // 
+            btnExit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnExit.AutoSize = true;
+            btnExit.Location = new Point(619, 3);
+            btnExit.Name = "btnExit";
+            btnExit.Size = new Size(75, 25);
+            btnExit.TabIndex = 5;
+            btnExit.Text = "&Exit";
+            btnExit.UseVisualStyleBackColor = true;
+            btnExit.Click += btnExit_Click;
             // 
             // cmsSchema
             // 
@@ -467,15 +467,18 @@
             tsMain.PerformLayout();
             tlpMain.ResumeLayout(false);
             tlpMain.PerformLayout();
-            tlpFooter.ResumeLayout(false);
-            tlpFooter.PerformLayout();
-            tlpSchemas.ResumeLayout(false);
-            tlpUserSchemas.ResumeLayout(false);
-            tlpUserSchemas.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             tlpCursors.ResumeLayout(false);
             tlpCursors.PerformLayout();
             tlpImportCursors.ResumeLayout(false);
             tlpImportCursors.PerformLayout();
+            tlpUserSchemas.ResumeLayout(false);
+            tlpUserSchemas.PerformLayout();
+            tlpFooter.ResumeLayout(false);
+            tlpFooter.PerformLayout();
             cmsSchema.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)bsSchema).EndInit();
             ResumeLayout(false);
@@ -502,7 +505,6 @@
         private TableLayoutPanel tlpFooter;
         private Button btnSave;
         private Button btnExit;
-        private TableLayoutPanel tlpSchemas;
         private TableLayoutPanel tlpCursors;
         private Label lblImportCursors;
         private Label lblImportedCursors;
@@ -523,6 +525,7 @@
         private ToolStripMenuItem tsmiSchemasDelete;
         private BindingSource bsSchema;
         private ToolStripButton lblGoToWindowsMouseProperties;
-        private TableLayoutPanel tlpImportedCursors;
+        private SplitContainer splitContainer1;
+        private Panel pnlImportedCursors;
     }
 }

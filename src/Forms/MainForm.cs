@@ -139,15 +139,25 @@ namespace WindowsCursorSwitcher
                 (string[] curFiles, string[] aniFiles) = (Directory.GetFiles(directories[directoryIndex], "*.cur"), Directory.GetFiles(directories[directoryIndex], "*.ani"));
                 string[] files = [.. curFiles, .. aniFiles];
 
+                var tlpImportedCursorGroups = new TableLayoutPanel
+                {
+                    AutoScroll = true,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    Dock = DockStyle.Top,
+                    ColumnCount = 1,
+                    RowCount = directories.Length
+                };
+                pnlImportedCursors.Controls.Add(tlpImportedCursorGroups);
+
                 var tlpImportedCursorGroup = new TableLayoutPanel
                 {
-                    BackColor = Color.Azure,
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     ColumnCount = 1,
-                    ColumnStyles = { new(SizeType.AutoSize), new(SizeType.AutoSize) },
+                    RowCount = 2
                 };
-                tlpImportedCursors.Controls.Add(tlpImportedCursorGroup, 0, directoryIndex);
+                tlpImportedCursorGroups.Controls.Add(tlpImportedCursorGroup, 0, directoryIndex);
 
                 var lblCursorGroup = new Label
                 {
@@ -158,7 +168,6 @@ namespace WindowsCursorSwitcher
 
                 var flpCursors = new FlowLayoutPanel
                 {
-                    BackColor = Color.Purple,
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     FlowDirection = FlowDirection.LeftToRight
@@ -181,7 +190,6 @@ namespace WindowsCursorSwitcher
 
                     var tlpCursor = new TableLayoutPanel
                     {
-                        BackColor = Color.Green,
                         AutoSize = true,
                         AutoSizeMode = AutoSizeMode.GrowAndShrink,
                         ColumnCount = 1,
@@ -198,7 +206,6 @@ namespace WindowsCursorSwitcher
 
                     var pbCursorPreview = new PictureBox
                     {
-                        BackColor = Color.Blue,
                         SizeMode = PictureBoxSizeMode.CenterImage,
                         Dock = DockStyle.Fill,
                         Image = bitmap
@@ -209,7 +216,6 @@ namespace WindowsCursorSwitcher
 
                     var lblCursorFileName = new Label
                     {
-                        BackColor = Color.Red,
                         Dock = DockStyle.Fill,
                         Text = cursorFileName
                     };
@@ -217,7 +223,6 @@ namespace WindowsCursorSwitcher
 
                     var lblCursorFilePath = new Label
                     {
-                        BackColor = Color.Yellow,
                         Dock = DockStyle.Fill,
                         Text = cursorFilePath
                     };
