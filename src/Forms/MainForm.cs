@@ -3,9 +3,7 @@
 // For license information, please see the LICENSE file in the root directory.
 
 using System.Diagnostics;
-using System.Windows.Forms;
 using WindowsCursorSwitcher.Data;
-using WindowsCursorSwitcher.Entities;
 using WindowsCursorSwitcher.Managers;
 using WindowsCursorSwitcher.Utils;
 
@@ -199,9 +197,20 @@ namespace WindowsCursorSwitcher
                     string fileAbsolutePath = Path.GetFullPath(file);
                     var cursorFilePath = fileAbsolutePath;
 
+                    var cmsCursor = new ContextMenuStrip
+                    {
+                        Items =
+                        {
+                            new ToolStripMenuItem("Open File Location", null, (sender, e) => OpenFileLocation(fileAbsolutePath)),
+                            new ToolStripSeparator(),
+                            new ToolStripMenuItem("Copy File Location", null, (sender, e) => Clipboard.SetText(fileAbsolutePath))
+                        }
+                    };
+
                     var lblCursorFileName = new Label
                     {
                         BackColor = Color.Red,
+                        ContextMenuStrip = cmsCursor,
                         Dock = DockStyle.Fill,
                         Text = cursorFileName
                     };
@@ -210,6 +219,7 @@ namespace WindowsCursorSwitcher
                     var lblCursorFilePath = new Label
                     {
                         BackColor = Color.Yellow,
+                        ContextMenuStrip = cmsCursor,
                         Dock = DockStyle.Fill,
                         Text = cursorFilePath
                     };
@@ -226,9 +236,25 @@ namespace WindowsCursorSwitcher
                 }
             }
         }
+        private void OpenFileLocation(string filePath)
+        {
+            try
+            {
+                Process.Start("explorer.exe", $"/select,\"{filePath}\"");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening file location: {ex.Message}");
+            }
+        }
 
         private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => OpenWindowsMouseProperties();
 
         private void OpenWindowsMouseProperties() => Process.Start("control", "main.cpl,,1");
+
+        private void openLocationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
