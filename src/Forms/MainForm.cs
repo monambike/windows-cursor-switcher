@@ -166,17 +166,30 @@ namespace WindowsCursorSwitcher
                 tlpImportedCursorGroup.Controls.Add(flpCursors, 0, 1);
                 foreach (var file in files)
                 {
+                    string fileAbsolutePath = Path.GetFullPath(file);
+                    var cursorFilePath = fileAbsolutePath;
+
+                    var cmsCursor = new ContextMenuStrip
+                    {
+                        Items =
+                        {
+                            new ToolStripMenuItem("Open File Location", null, (sender, e) => OpenFileLocation(fileAbsolutePath)),
+                            new ToolStripSeparator(),
+                            new ToolStripMenuItem("Copy File Location", null, (sender, e) => Clipboard.SetText(fileAbsolutePath))
+                        }
+                    };
+
                     var tlpCursor = new TableLayoutPanel
                     {
                         BackColor = Color.Green,
                         AutoSize = true,
                         AutoSizeMode = AutoSizeMode.GrowAndShrink,
                         ColumnCount = 1,
-                        ColumnStyles = { new(SizeType.Absolute, 64) },
+                        Width = 150,
+                        Height = 150,
+                        ContextMenuStrip = cmsCursor,
                         Dock = DockStyle.Fill,
                         RowCount = 3,
-                        RowStyles = { new(SizeType.Absolute, 64) },
-                        Size = new Size(128, 128)
                     };
                     flpCursors.Controls.Add(tlpCursor);
 
@@ -194,23 +207,9 @@ namespace WindowsCursorSwitcher
 
                     var cursorFileName = Path.GetFileName(file);
 
-                    string fileAbsolutePath = Path.GetFullPath(file);
-                    var cursorFilePath = fileAbsolutePath;
-
-                    var cmsCursor = new ContextMenuStrip
-                    {
-                        Items =
-                        {
-                            new ToolStripMenuItem("Open File Location", null, (sender, e) => OpenFileLocation(fileAbsolutePath)),
-                            new ToolStripSeparator(),
-                            new ToolStripMenuItem("Copy File Location", null, (sender, e) => Clipboard.SetText(fileAbsolutePath))
-                        }
-                    };
-
                     var lblCursorFileName = new Label
                     {
                         BackColor = Color.Red,
-                        ContextMenuStrip = cmsCursor,
                         Dock = DockStyle.Fill,
                         Text = cursorFileName
                     };
@@ -219,7 +218,6 @@ namespace WindowsCursorSwitcher
                     var lblCursorFilePath = new Label
                     {
                         BackColor = Color.Yellow,
-                        ContextMenuStrip = cmsCursor,
                         Dock = DockStyle.Fill,
                         Text = cursorFilePath
                     };
@@ -251,10 +249,5 @@ namespace WindowsCursorSwitcher
         private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => OpenWindowsMouseProperties();
 
         private void OpenWindowsMouseProperties() => Process.Start("control", "main.cpl,,1");
-
-        private void openLocationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
