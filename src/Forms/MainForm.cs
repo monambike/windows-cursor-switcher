@@ -2,6 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using System.Diagnostics;
 using System.Windows.Forms;
 using WindowsCursorSwitcher.Data;
 using WindowsCursorSwitcher.Entities;
@@ -123,7 +124,7 @@ namespace WindowsCursorSwitcher
         private void CreatePanel()
         {
             string folderPath = "../../../MyCursors/";
-            
+
             string[] directories = [];
             try
             {
@@ -135,71 +136,99 @@ namespace WindowsCursorSwitcher
                 Console.WriteLine($@"Directory ""{folderPath}"" was not found while trying to search for cursors.");
             }
 
-            foreach (var directory in directories)
+            for (int directoryIndex = 0; directoryIndex < directories.Length; directoryIndex++)
             {
-                (string[] curFiles, string[]aniFiles) = (Directory.GetFiles(directory, "*.cur"), Directory.GetFiles(directory, "*.ani"));
+                (string[] curFiles, string[] aniFiles) = (Directory.GetFiles(directories[directoryIndex], "*.cur"), Directory.GetFiles(directories[directoryIndex], "*.ani"));
                 string[] files = [.. curFiles, .. aniFiles];
 
-                var tableLayoutPanel = new TableLayoutPanel
+                var tlpImportedCursorGroup = new TableLayoutPanel
                 {
+                    BackColor = Color.Azure,
                     AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     ColumnCount = 1,
-                    ColumnStyles = { new(SizeType.AutoSize), new(SizeType.Percent, 100) },
-                    Dock = DockStyle.Fill,
-                    RowCount = 2
+                    ColumnStyles = { new(SizeType.AutoSize), new(SizeType.AutoSize) },
                 };
-                pnlImportedCursors.Controls.Add(tableLayoutPanel);
+                tlpImportedCursors.Controls.Add(tlpImportedCursorGroup, 0, directoryIndex);
 
-                var label = new Label()
+                var lblCursorGroup = new Label
                 {
                     Dock = DockStyle.Fill,
-                    Text = $"{Path.GetFileName(directory)}"
+                    Text = $"{Path.GetFileName(directories[directoryIndex])}"
                 };
-                tableLayoutPanel.Controls.Add(label, 0, 0);
+                tlpImportedCursorGroup.Controls.Add(lblCursorGroup, 0, 0);
 
-                var flowLayoutPanel = new FlowLayoutPanel()
+                var flpCursors = new FlowLayoutPanel
                 {
-                    Dock = DockStyle.Fill
+                    BackColor = Color.Purple,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    FlowDirection = FlowDirection.LeftToRight
                 };
-                tableLayoutPanel.Controls.Add(flowLayoutPanel, 0, 1);
+                tlpImportedCursorGroup.Controls.Add(flpCursors, 0, 1);
                 foreach (var file in files)
                 {
-
-                    var tableLayoutPanelInner = new TableLayoutPanel
+                    var tlpCursor = new TableLayoutPanel
                     {
+                        BackColor = Color.Green,
                         AutoSize = true,
+                        AutoSizeMode = AutoSizeMode.GrowAndShrink,
                         ColumnCount = 1,
                         ColumnStyles = { new(SizeType.Absolute, 64) },
                         Dock = DockStyle.Fill,
                         RowCount = 3,
-                        RowStyles = { new(SizeType.Absolute, 64) }
+                        RowStyles = { new(SizeType.Absolute, 64) },
+                        Size = new Size(128, 128)
                     };
-                    flowLayoutPanel.Controls.Add(tableLayoutPanelInner);
+                    flpCursors.Controls.Add(tlpCursor);
 
                     Icon icon = Icon.ExtractAssociatedIcon(file);
                     Bitmap bitmap = icon.ToBitmap();
-                    var image = new PictureBox
+
+                    var pbCursorPreview = new PictureBox
                     {
+                        BackColor = Color.Blue,
+                        SizeMode = PictureBoxSizeMode.CenterImage,
                         Dock = DockStyle.Fill,
                         Image = bitmap
                     };
-                    tableLayoutPanelInner.Controls.Add(image, 0, 0);
+                    tlpCursor.Controls.Add(pbCursorPreview, 0, 0);
 
-                    var name = new Label()
-                    {
-                        Dock = DockStyle.Fill,
-                        Text = $"{Path.GetFileName(directory)}"
-                    };
-                    tableLayoutPanelInner.Controls.Add(name, 0, 1);
+                    var cursorFileName = Path.GetFileName(file);
 
-                    var path = new Label()
+                    string fileAbsolutePath = Path.GetFullPath(file);
+                    var cursorFilePath = fileAbsolutePath;
+
+                    var lblCursorFileName = new Label
                     {
+                        BackColor = Color.Red,
                         Dock = DockStyle.Fill,
-                        Text = $"{directory}"
+                        Text = cursorFileName
                     };
-                    tableLayoutPanelInner.Controls.Add(path, 0, 2);
+                    tlpCursor.Controls.Add(lblCursorFileName, 0, 1);
+
+                    var lblCursorFilePath = new Label
+                    {
+                        BackColor = Color.Yellow,
+                        Dock = DockStyle.Fill,
+                        Text = cursorFilePath
+                    };
+                    tlpCursor.Controls.Add(lblCursorFilePath, 0, 2);
+
+                    var cursorToolTip = new ToolTip
+                    {
+                        InitialDelay = 1000,
+                        ToolTipIcon = ToolTipIcon.Info,
+                        ToolTipTitle = cursorFileName
+                    };
+                    cursorToolTip.SetToolTip(lblCursorFileName, cursorFilePath);
+                    cursorToolTip.SetToolTip(lblCursorFilePath, cursorFilePath);
                 }
             }
         }
+
+        private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => OpenWindowsMouseProperties();
+
+        private void OpenWindowsMouseProperties() => Process.Start("control", "main.cpl,,1");
     }
 }
