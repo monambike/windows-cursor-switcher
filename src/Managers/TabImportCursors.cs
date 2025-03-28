@@ -20,6 +20,21 @@ namespace WindowsCursorSwitcher.Managers
 
         internal void UpdateImportedCursors()
         {
+            var directories = RetrieveImportedCursorsDirectories();
+
+            for (int directoryIndex = 0; directoryIndex < directories.Length; directoryIndex++)
+            {
+                (string[] curFiles, string[] aniFiles) = (Directory.GetFiles(directories[directoryIndex], "*.cur"), Directory.GetFiles(directories[directoryIndex], "*.ani"));
+                string[] allCursorFiles = [.. curFiles, .. aniFiles];
+
+                var flpCursors = CreateCursorGroup(directories, directoryIndex);
+
+                foreach (var file in allCursorFiles) CreateCursor(file, flpCursors);
+            }
+        }
+
+        internal static string[] RetrieveImportedCursorsDirectories()
+        {
             string folderPath = "../../../MyCursors/";
 
             string[] directories = [];
@@ -34,17 +49,10 @@ namespace WindowsCursorSwitcher.Managers
                 Console.WriteLine($@"Directory ""{folderPath}"" was not found while trying to search for cursors.");
             }
 
-
-            for (int directoryIndex = 0; directoryIndex < directories.Length; directoryIndex++)
-            {
-                (string[] curFiles, string[] aniFiles) = (Directory.GetFiles(directories[directoryIndex], "*.cur"), Directory.GetFiles(directories[directoryIndex], "*.ani"));
-                string[] allCursorFiles = [.. curFiles, .. aniFiles];
-
-                var flpCursors = CreateCursorGroup(directories, directoryIndex);
-
-                foreach (var file in allCursorFiles) CreateCursor(file, flpCursors);
-            }
+            return directories;
         }
+        
+        internal static string?[] RetrieveImportedCursors() => RetrieveImportedCursorsDirectories().Select(Path.GetFileName).ToArray();
 
         public FlowLayoutPanel CreateCursorGroup(string[] directories, int directoryIndex)
         {

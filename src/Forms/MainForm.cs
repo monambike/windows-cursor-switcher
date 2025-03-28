@@ -2,6 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using WindowsCursorSwitcher.Forms;
 using WindowsCursorSwitcher.Helpers;
 using WindowsCursorSwitcher.Managers;
 using WindowsCursorSwitcher.Utils;
@@ -44,9 +45,9 @@ namespace WindowsCursorSwitcher
 
         private void tcSchemas_SelectedIndexChanged(object sender, EventArgs e) => CheckSchemaTabsCount();
 
-        private void btnImportCursorsFromFolder_Click(object sender, EventArgs e) => FileHelper.OpenFolderDialog();
+        private void btnImportCursorsFromFolder_Click(object sender, EventArgs e) => ImportCursorsFromFolder();
 
-        private void btnImportCursorFiles_Click(object sender, EventArgs e) => FileHelper.OpenFileDialog();
+        private void btnImportCursorFiles_Click(object sender, EventArgs e) => ImportCursorFiles();
 
         private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => FileHelper.OpenWindowsMousePropertiesWindow();
 
@@ -59,11 +60,35 @@ namespace WindowsCursorSwitcher
                 string concatenatedValues = string.Join(",", TabSchemaManager.TabSchemaPageManagers.Select(tsm => tsm.TextBoxes.Select(txt => txt.Text)));
             }
         }
-        private void CheckSchemaTabsCount()
+        internal void CheckSchemaTabsCount()
         {
             bool hasTabs = tcSchemas.TabPages.Count > 0;
 
             btnSave.Enabled = hasTabs;
+        }
+
+        internal string SetImportedCursorsToGroup()
+        {
+            using (var inputForm = new ChooseCursorGroupForm())
+            {
+                if (inputForm.ShowDialog() == DialogResult.OK)
+                {
+                    return inputForm.Result;
+                }
+            }
+            return string.Empty;
+        }
+
+        internal void ImportCursorsFromFolder()
+        {
+            FileHelper.OpenFolderDialog();
+
+            SetImportedCursorsToGroup();
+        }
+
+        internal void ImportCursorFiles()
+        {
+            FileHelper.OpenFileDialog();
         }
     }
 }
