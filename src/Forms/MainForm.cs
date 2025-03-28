@@ -20,7 +20,7 @@ namespace WindowsCursorSwitcher
             UtilApplication.ValidateIfRunAsAdministrator();
 
             // Updates imported cursors panel.
-            var tabImportCursors = new TabImportCursors(pnlImportedCursors);
+            var tabImportCursors = new TabImportCursors(pnlImportedCursors, ActiveControl);
             tabImportCursors.UpdateImportedCursors();
 
             // Updates user windows schemas using data from RegEdit.
@@ -44,9 +44,9 @@ namespace WindowsCursorSwitcher
 
         private void tcSchemas_SelectedIndexChanged(object sender, EventArgs e) => CheckSchemaTabsCount();
 
-        private void btnSelectFromFolder_Click(object sender, EventArgs e) => FileHelper.OpenFolderDialog();
+        private void btnImportCursorsFromFolder_Click(object sender, EventArgs e) => FileHelper.OpenFolderDialog();
 
-        private void btnSelectFromFile_Click(object sender, EventArgs e) => FileHelper.OpenFileDialog();
+        private void btnImportCursorFiles_Click(object sender, EventArgs e) => FileHelper.OpenFileDialog();
 
         private void lblWindowsMouseProperties_Click(object sender, EventArgs e) => FileHelper.OpenWindowsMousePropertiesWindow();
 

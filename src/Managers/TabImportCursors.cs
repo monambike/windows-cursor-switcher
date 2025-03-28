@@ -2,6 +2,7 @@
 // Contact: @monambike for more information.
 // For license information, please see the LICENSE file in the root directory.
 
+using WindowsCursorSwitcher.Forms;
 using WindowsCursorSwitcher.Helpers;
 
 namespace WindowsCursorSwitcher.Managers
@@ -10,9 +11,11 @@ namespace WindowsCursorSwitcher.Managers
     {
         Panel _pnlImportedCursors;
 
-        public TabImportCursors(Panel pnlImportedCursors)
+        Control? _activeControl;
+
+        public TabImportCursors(Panel pnlImportedCursors, Control? activeControl)
         {
-            _pnlImportedCursors = pnlImportedCursors;
+            (_pnlImportedCursors, _activeControl) = (pnlImportedCursors, activeControl);
         }
 
         internal void UpdateImportedCursors()
@@ -65,8 +68,20 @@ namespace WindowsCursorSwitcher.Managers
             };
             tlpImportedCursorGroups.Controls.Add(tlpImportedCursorGroup, 0, directoryIndex);
 
+
+            var inputForm = new InputForm("Insert the new name:");
+
+            var cmsCursorGroup = new ContextMenuStrip
+            {
+                Items =
+                {
+                    new ToolStripMenuItem("Rename", null, (sender, e) => FileHelper.RenameFolder(Path.GetFileName(directories[directoryIndex]), "newName"))
+                }
+            };
+
             var lblCursorGroup = new Label
             {
+                ContextMenuStrip = cmsCursorGroup,
                 Dock = DockStyle.Fill,
                 Font = new Font(Control.DefaultFont, FontStyle.Bold),
                 Text = $"{Path.GetFileName(directories[directoryIndex])}"
@@ -132,6 +147,8 @@ namespace WindowsCursorSwitcher.Managers
             tlpCursor.Controls.Add(pbCursorPreview, 0, 0);
 
             var cursorFileName = Path.GetFileName(file);
+            pbCursorPreview.Tag = cursorFileName;
+            pbCursorPreview.Click += PbCursorPreview_Click;
 
             var lblCursorFileName = new Label
             {
@@ -155,6 +172,19 @@ namespace WindowsCursorSwitcher.Managers
             };
             cursorToolTip.SetToolTip(lblCursorFileName, cursorFilePath);
             cursorToolTip.SetToolTip(lblCursorFilePath, cursorFilePath);
+        }
+
+        private void PbCursorPreview_Click(object? sender, EventArgs e)
+        {
+            if (sender is PictureBox pb && pb.Tag is string cursorFileName)
+            {
+                if (_activeControl is TextBox textBox)
+                {
+                    //int selectionStart = textBox.SelectionStart;
+                    textBox.Text = cursorFileName;
+                    //textBox.SelectionStart = selectionStart + text.Length;
+                }
+            }
         }
     }
 }

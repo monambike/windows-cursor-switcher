@@ -53,8 +53,8 @@
             lblImportCursors = new Label();
             lblImportedCursors = new Label();
             tlpImportCursors = new TableLayoutPanel();
-            btnSelectFromFolder = new Button();
-            btnSelectFromFile = new Button();
+            btnImportCursorsFromFolder = new Button();
+            btnImportCursorFiles = new Button();
             pnlImportedCursors = new Panel();
             tlpUserSchemas = new TableLayoutPanel();
             tcSchemas = new TabControl();
@@ -286,8 +286,8 @@
             tlpImportCursors.ColumnStyles.Add(new ColumnStyle());
             tlpImportCursors.ColumnStyles.Add(new ColumnStyle());
             tlpImportCursors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlpImportCursors.Controls.Add(btnSelectFromFolder, 1, 0);
-            tlpImportCursors.Controls.Add(btnSelectFromFile, 0, 0);
+            tlpImportCursors.Controls.Add(btnImportCursorsFromFolder, 1, 0);
+            tlpImportCursors.Controls.Add(btnImportCursorFiles, 0, 0);
             tlpImportCursors.Dock = DockStyle.Fill;
             tlpImportCursors.Location = new Point(3, 18);
             tlpImportCursors.Name = "tlpImportCursors";
@@ -296,33 +296,33 @@
             tlpImportCursors.Size = new Size(360, 31);
             tlpImportCursors.TabIndex = 3;
             // 
-            // btnSelectFromFolder
+            // btnImportCursorsFromFolder
             // 
-            btnSelectFromFolder.AutoSize = true;
-            btnSelectFromFolder.Image = Properties.Resources.folder;
-            btnSelectFromFolder.Location = new Point(173, 3);
-            btnSelectFromFolder.Name = "btnSelectFromFolder";
-            btnSelectFromFolder.Size = new Size(174, 25);
-            btnSelectFromFolder.TabIndex = 0;
-            btnSelectFromFolder.Text = "Select Cursors From F&older";
-            btnSelectFromFolder.TextAlign = ContentAlignment.MiddleLeft;
-            btnSelectFromFolder.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnSelectFromFolder.UseVisualStyleBackColor = true;
-            btnSelectFromFolder.Click += btnSelectFromFolder_Click;
+            btnImportCursorsFromFolder.AutoSize = true;
+            btnImportCursorsFromFolder.Image = Properties.Resources.folder;
+            btnImportCursorsFromFolder.Location = new Point(173, 3);
+            btnImportCursorsFromFolder.Name = "btnImportCursorsFromFolder";
+            btnImportCursorsFromFolder.Size = new Size(179, 25);
+            btnImportCursorsFromFolder.TabIndex = 0;
+            btnImportCursorsFromFolder.Text = "Import Cursors From F&older";
+            btnImportCursorsFromFolder.TextAlign = ContentAlignment.MiddleLeft;
+            btnImportCursorsFromFolder.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnImportCursorsFromFolder.UseVisualStyleBackColor = true;
+            btnImportCursorsFromFolder.Click += btnImportCursorsFromFolder_Click;
             // 
-            // btnSelectFromFile
+            // btnImportCursorFiles
             // 
-            btnSelectFromFile.AutoSize = true;
-            btnSelectFromFile.Image = Properties.Resources.filled;
-            btnSelectFromFile.Location = new Point(3, 3);
-            btnSelectFromFile.Name = "btnSelectFromFile";
-            btnSelectFromFile.Size = new Size(164, 25);
-            btnSelectFromFile.TabIndex = 1;
-            btnSelectFromFile.Text = "Select Cursors From F&iles";
-            btnSelectFromFile.TextAlign = ContentAlignment.MiddleLeft;
-            btnSelectFromFile.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnSelectFromFile.UseVisualStyleBackColor = true;
-            btnSelectFromFile.Click += btnSelectFromFile_Click;
+            btnImportCursorFiles.AutoSize = true;
+            btnImportCursorFiles.Image = Properties.Resources.filled;
+            btnImportCursorFiles.Location = new Point(3, 3);
+            btnImportCursorFiles.Name = "btnImportCursorFiles";
+            btnImportCursorFiles.Size = new Size(164, 25);
+            btnImportCursorFiles.TabIndex = 1;
+            btnImportCursorFiles.Text = "Import Cursor F&iles";
+            btnImportCursorFiles.TextAlign = ContentAlignment.MiddleLeft;
+            btnImportCursorFiles.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnImportCursorFiles.UseVisualStyleBackColor = true;
+            btnImportCursorFiles.Click += btnImportCursorFiles_Click;
             // 
             // pnlImportedCursors
             // 
@@ -509,8 +509,8 @@
         private Label lblImportCursors;
         private Label lblImportedCursors;
         private TableLayoutPanel tlpImportCursors;
-        private Button btnSelectFromFolder;
-        private Button btnSelectFromFile;
+        private Button btnImportCursorsFromFolder;
+        private Button btnImportCursorFiles;
         private ToolStripDropDownButton tsddbFile;
         private ToolStripMenuItem tsmiFileImportFromFolder;
         private ToolStripMenuItem tsmiFileImportFromFile;

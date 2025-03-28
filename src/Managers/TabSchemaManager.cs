@@ -83,23 +83,23 @@ namespace WindowsCursorSwitcher.Managers
                     var tabSchemaPageManager = new TabSchemaPage { TabPage = newTab };
                     for (int regeditPathIndex = 0; regeditPathIndex < regeditPaths.Count(); regeditPathIndex++)
                     {
-                        var label = new Label()
+                        var lblCursor = new Label()
                         {
                             Dock = DockStyle.Fill,
                             Text = $"{MappingCursors.Cursors[regeditPathIndex].WindowsName} ({MappingCursors.Cursors[regeditPathIndex].RegeditName})"
                         };
-                        tableLayoutPanel.Controls.Add(label, 0, regeditPathIndex);
+                        tableLayoutPanel.Controls.Add(lblCursor, 0, regeditPathIndex);
 
-                        var textBox = new TextBox()
+                        var txtCursorPath = new TextBox()
                         {
                             Dock = DockStyle.Fill,
                             DataBindings = { new Binding("Text", Schemas[regeditSchemaIndex].Cursors[regeditPathIndex], "RelativePath") },
                             Text = regeditPaths[regeditPathIndex]
                         };
-                        tableLayoutPanel.Controls.Add(textBox, 1, regeditPathIndex);
-                        tabSchemaPageManager.TextBoxes.Add(textBox);
+                        tableLayoutPanel.Controls.Add(txtCursorPath, 1, regeditPathIndex);
+                        tabSchemaPageManager.TextBoxes.Add(txtCursorPath);
 
-                        var button = new Button()
+                        var btnSetAsCursor = new Button()
                         {
                             AutoSize = true,
                             Image = Properties.Resources.arrow,
@@ -107,10 +107,10 @@ namespace WindowsCursorSwitcher.Managers
                             Text = "Set as Cursor",
                             TextImageRelation = TextImageRelation.ImageBeforeText
                         };
-                        tableLayoutPanel.Controls.Add(button, 2, regeditPathIndex);
-                        tabSchemaPageManager.Button = button;
+                        tableLayoutPanel.Controls.Add(btnSetAsCursor, 2, regeditPathIndex);
+                        tabSchemaPageManager.Button = btnSetAsCursor;
 
-                        button.Click += (sender, e) =>
+                        btnSetAsCursor.Click += (sender, e) =>
                         {
                             MessageBox.Show("Cursor Changed!", "Hooray!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         };

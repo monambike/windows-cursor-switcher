@@ -42,5 +42,15 @@ namespace WindowsCursorSwitcher.Helpers
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK) path = Path.GetRelativePath(Application.StartupPath, folderBrowserDialog.SelectedPath);
             return path;
         }
+
+        internal static void RenameFolder(string folderPath, string newName)
+        {
+            var parentDirectory = Path.GetDirectoryName(folderPath);
+
+            string newFolderPath = Path.Combine(parentDirectory, newName);
+
+            if (Directory.Exists(folderPath) && !Directory.Exists(newFolderPath)) Directory.Move(folderPath, newFolderPath);
+            else Console.WriteLine("Error: Directory does not exists or name already in use.");
+        }
     }
 }
